@@ -36,8 +36,7 @@ const Home = () => {
         <p></p>
       </SignedOut>
       <SignedIn>
-        {/* השתמש ב-Navigate לפנייה לעמוד המבוקש */}
-        <SignOutButton onClick={() => navigate('/CreateRoute')} />
+        <SignOutButton onClick={() => navigate('/GoogleMaps')} />
         <p></p>
       </SignedIn>
     </div>

@@ -9,7 +9,7 @@ function Header() {
         {
             id: 1,
             name: "Ride",
-            icon:taxi
+            icon: taxi
         },
         {
             id: 2,

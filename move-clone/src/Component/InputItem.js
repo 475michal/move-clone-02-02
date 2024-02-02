@@ -1,8 +1,10 @@
+/* global google */
+
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import move from './img/move.png';
 import { useContext, useEffect, useState } from 'react';
 import { SourceContext } from './Context/SourceContext';
-import { DesitnationContext } from './Context/DestinationContext';
+import { DestinationContext } from './Context/DestinationContext';
 
 const GOOGLEMAP_KEY = 'AIzaSyBNVjEXhyDOUvcCECJFY5x_OGKt38dxVBk';
 
@@ -10,7 +12,7 @@ function InputItem({ type }) {
     const [value, setValue] = useState(null);
     const [placeholder, setPlaceholder] = useState(null);
     const { source, setSource } = useContext(SourceContext);
-    const { desitnation, setDesitnation } = useContext(DesitnationContext);
+    const { desitnation, setDestination } = useContext(DestinationContext);
 
 
     useEffect(() => {
@@ -20,36 +22,37 @@ function InputItem({ type }) {
     }, []);
 
     const getLatAndLng = (place, type) => {
-        console.log(place, type);
-        const placeId = place.value.place_id;
-        const service = new google.maps.places.PlacesService(document.createElement('div'));
-        service.getDetails({ placeId }, (place, status) => {
-            if (status === 'OK' && place.geometry && place.geometry.location) {
-                console.log(place.geometry.location.lng());
-                if (type == 'source') {
-                    setSource({
-                        lat: place.geometry.location.lat(),
-                        lng: place.geometry.location.lng(),
-                        name: place.formatted_address,  // corrected from place.formatted_addtess
-                        label: place.name
-                    });
-                } else {
-                    setDesitnation({
-                        lat: place.geometry.location.lat(),
-                        lng: place.geometry.location.lng(),
-                        name: place.formatted_address,  // corrected from place.formatted_addtess
-                        label: place.name
-                    });
+        if (place && place.value) {  // הוסף בדיקה כאן
+            const placeId = place.value.place_id;
+            const service = new google.maps.places.PlacesService(document.createElement('div'));
+            service.getDetails({ placeId }, (place, status) => {
+                if (status === 'OK' && place.geometry && place.geometry.location) {
+                    console.log(place.geometry.location.lng());
+                    if (type === 'source') {
+                        setSource({
+                            lat: place.geometry.location.lat(),
+                            lng: place.geometry.location.lng(),
+                            name: place.formatted_address,
+                            label: place.name
+                        });
+                    } else {
+                        setDestination({
+                            lat: place.geometry.location.lat(),
+                            lng: place.geometry.location.lng(),
+                            name: place.formatted_address,
+                            label: place.name
+                        });
+                    }
                 }
-            }
-
-        })
+            });
+        }
     }
+    
 
     return (
 
         <div className='bg-slate-200 p-3 rounded-lg mt-3 flex items-center gap-4'>
-            <image src={move} width={15} height={15} />
+            <img src={move} width={25} height={45} alt="Move icon" />
             {/* <input type="text" placeholder={type=='source'?"Pickup Location":'Drop of Location'} 
                 className='bg-transparent w-full outline-none'/>*/}
             <GooglePlacesAutocomplete

@@ -1,11 +1,12 @@
 import React, { useContext, useEffect } from "react";
-import InputItem from './InputItem'
+
 import { SourceContext } from "./Context/SourceContext";
-import { DesitnationContext } from "./Context/DestinationContext";
+import { DestinationContext } from "./Context/DestinationContext";
+import InputItem from "./InputItem";
 
 function Search(){
     const {source,setSource} =useContext(SourceContext);
-    const {desitnation,setDesitnation} =useContext(DesitnationContext);
+    const {desitnation,setDesitnation} =useContext(DestinationContext);
     
     useEffect(()=>{
         if(source){
@@ -22,7 +23,7 @@ return(
     <div className="p-2 md:pd-6 border-[2px] rounded-xl">
        <p className="text-[20px] font-bold ">Get a move</p>
        <InputItem type='source'/>
-       <InputItem type='destination'/>
+       <InputItem type='desitnation'/>
         <button className="p-3 bg-black w-full mt-5 text-white rounded-lg">Search</button>
     </div>
 );
