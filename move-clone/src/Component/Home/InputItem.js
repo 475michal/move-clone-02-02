@@ -1,12 +1,11 @@
 /* global google */
 
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
-import move from './img/move.png';
+import move from '../img/move.png';
 import { useContext, useEffect, useState } from 'react';
-import { SourceContext } from './Context/SourceContext';
-import { DestinationContext } from './Context/DestinationContext';
+import { SourceContext } from '../Context/SourceContext';
+import { DestinationContext } from '../Context/DestinationContext';
 
-const GOOGLEMAP_KEY = 'AIzaSyBNVjEXhyDOUvcCECJFY5x_OGKt38dxVBk';
 
 function InputItem({ type }) {
     const [value, setValue] = useState(null);
@@ -14,6 +13,7 @@ function InputItem({ type }) {
     const { source, setSource } = useContext(SourceContext);
     const { desitnation, setDestination } = useContext(DestinationContext);
 
+const GOOGLEMAP_KEY = 'AIzaSyBNVjEXhyDOUvcCECJFY5x_OGKt38dxVBk';
 
     useEffect(() => {
         type == 'source'
@@ -22,32 +22,32 @@ function InputItem({ type }) {
     }, []);
 
     const getLatAndLng = (place, type) => {
-        if (place && place.value) {  // הוסף בדיקה כאן
-            const placeId = place.value.place_id;
-            const service = new google.maps.places.PlacesService(document.createElement('div'));
-            service.getDetails({ placeId }, (place, status) => {
-                if (status === 'OK' && place.geometry && place.geometry.location) {
-                    console.log(place.geometry.location.lng());
-                    if (type === 'source') {
-                        setSource({
-                            lat: place.geometry.location.lat(),
-                            lng: place.geometry.location.lng(),
-                            name: place.formatted_address,
-                            label: place.name
-                        });
-                    } else {
-                        setDestination({
-                            lat: place.geometry.location.lat(),
-                            lng: place.geometry.location.lng(),
-                            name: place.formatted_address,
-                            label: place.name
-                        });
-                    }
+
+        const placeId = place.value.place_id;
+        const service = new google.maps.places.PlacesService(document.createElement('div'));
+        service.getDetails({ placeId }, (place, status) => {
+            if (status === 'OK' && place.geometry && place.geometry.location) {
+                console.log(place.geometry.location.lng());
+                if (type === 'source') {
+                    setSource({
+                        lat: place.geometry.location.lat(),
+                        lng: place.geometry.location.lng(),
+                        name: place.formatted_address,
+                        label: place.name
+                    });
+                } else {
+                    setDestination({
+                        lat: place.geometry.location.lat(),
+                        lng: place.geometry.location.lng(),
+                        name: place.formatted_address,
+                        label: place.name
+                    });
                 }
-            });
-        }
+            }
+        });
+
     }
-    
+
 
     return (
 
@@ -56,7 +56,7 @@ function InputItem({ type }) {
             {/* <input type="text" placeholder={type=='source'?"Pickup Location":'Drop of Location'} 
                 className='bg-transparent w-full outline-none'/>*/}
             <GooglePlacesAutocomplete
-                apiKey={GOOGLEMAP_KEY}
+              
                 selectProps={{
                     value,
                     onChange: (place) => {

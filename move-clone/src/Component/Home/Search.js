@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 
-import { SourceContext } from "./Context/SourceContext";
-import { DestinationContext } from "./Context/DestinationContext";
+import { SourceContext } from "../Context/SourceContext";
+import { DestinationContext } from "../Context/DestinationContext";
 import InputItem from "./InputItem";
 
 function Search(){
