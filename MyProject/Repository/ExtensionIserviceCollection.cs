@@ -22,6 +22,7 @@ namespace Repository
             services.AddScoped<IRepository<Users>, UserRepository>();
             services.AddScoped<IRepository<Review>, ReviewRepository>();
             services.AddScoped<IRepository<Ordering>, OrderingRepository>();
+            services.AddScoped<IRepository<Paypal>, PaypalRepository>();
             return services;
         }
     }

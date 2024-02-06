@@ -1,4 +1,5 @@
-﻿using Repository.Entity;
+﻿using Microsoft.EntityFrameworkCore;
+using Repository.Entity;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -16,40 +17,40 @@ namespace Repository.Repository
             _context= context;
         }
 
-        public void addItem(Ordering entity)
+        public async Task addItem(Ordering entity)
         {
-            _context.orderings.Add(entity);
-            _context.save();
+            await _context.orderings.AddAsync(entity);
+            await  _context.save();
         }
 
-        public void delete(int id)
+        public async Task delete(int id)
         {
-            _context.orderings.Remove(GetById(id));
-            _context.save();
+            _context.orderings.Remove(await GetById(id));
+            await _context.save();
         }
 
-        public List<Ordering> GetAll()
+        public async Task<List<Ordering>> GetAll()
         {
-            return _context.orderings.ToList();
+            return await  _context.orderings.ToListAsync();
         }
 
-        public Ordering GetById(int id)
+        public async Task<Ordering> GetById(int id)
         {
-            return _context.orderings.FirstOrDefault(x => x.Id == id);
+            return await _context.orderings.FirstOrDefaultAsync(x => x.OrderId == id);
 
         }
 
-        public void update(int id, Ordering entity)
+        public async Task update(int id, Ordering entity)
         {
-            Ordering ordering = GetById(id);
+            Ordering ordering = await GetById(id);
             ordering.DriverId = entity.DriverId;
             ordering.UserId = entity.UserId;
-            ordering.Origin = entity.Origin;
+            ordering.Source = entity.Source;
             ordering.Status = entity.Status;
-            ordering.PlacesNeeded = entity.PlacesNeeded;
-            ordering.TravelTime = entity.TravelTime;
+            ordering.ChoiseCar = entity.ChoiseCar;
+            ordering.DriveTime = entity.DriveTime;
             ordering.Destination = entity.Destination;
-            _context.save();
+            await _context.save();
         }
     }
 }

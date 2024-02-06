@@ -1,4 +1,5 @@
-﻿using Repository.Entity;
+﻿using Microsoft.EntityFrameworkCore;
+using Repository.Entity;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -16,38 +17,37 @@ namespace Repository.Repository
             _context = context;
         }
 
-        public void addItem(Users entity)
+        public async Task addItem(Users entity)
         {
-            _context.users.Add(entity);
-            _context.save();
+            await _context.users.AddAsync(entity);
+            await _context.save();
         }
 
-        public void delete(int id)
+        public async Task delete(int id)
         {
-            _context.users.Remove(GetById(id));
-            _context.save();
+            _context.users.Remove(await GetById(id));
+            await _context.save();
         }
 
-        public List<Users> GetAll()
+        public async Task<List<Users>> GetAll()
         {
-            return _context.users;
+            return await _context.users.ToListAsync();
         }
 
-        public Users GetById(int id)
+        public async Task<Users> GetById(int UserId)
         {
-            return _context.users.FirstOrDefault(x => x.Id == id);
+            return await _context.users.FirstOrDefaultAsync(x => x.UserId == UserId);
 
         }
 
-        public void update(int id, Users entity)
+        public async Task update(int id, Users entity)
         {
-            Users users = GetById(id);
+            Users users =await GetById(id);
             users.Username = entity.Username;
             users.Password = entity.Password;
             users.Email = entity.Email;
-            users.AuthenticationType = entity.AuthenticationType;
             users.PhoneNumber = entity.PhoneNumber;
-
+            await _context.save();
         }
     }
 }

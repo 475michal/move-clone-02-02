@@ -8,10 +8,10 @@ namespace Repository.Interfaces
 {
     public interface IRepository<T>
     {
-        public List<T> GetAll();
-        public T GetById(int id);
-        public void delete(int id);
-        public void update(int id, T entity);
-        public void addItem(T item);
+        public Task<List<T>> GetAll();
+        public Task<T> GetById(int id);
+        public Task delete(int id);
+        public Task update(int id, T entity);
+        public Task addItem(T item);
     }
 }

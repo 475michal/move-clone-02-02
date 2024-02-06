@@ -18,10 +18,11 @@ namespace Repository
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddRepositories();
-            services.AddScoped<IService<DriverDto>, DriverService>();
-            services.AddScoped<IService<UserDto>, UserService>();
-            services.AddScoped<IService<ReviewDto>, ReviewService>();
-            services.AddScoped<IService<OrderingDto>, OrderingService>();
+            services.AddScoped(typeof(IService<DriverDto>), typeof(DriverService));
+            services.AddScoped(typeof(IService<UserDto>), typeof(UserService));
+            services.AddScoped(typeof(IService<ReviewDto>), typeof(ReviewService));
+            services.AddScoped(typeof(IService<OrderingDto>), typeof(OrderingService));
+            services.AddScoped(typeof(IService<PaypalDto>), typeof(PaypalService));
             services.AddAutoMapper(typeof(MapperProfile));
             return services;
         }

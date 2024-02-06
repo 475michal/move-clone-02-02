@@ -17,6 +17,7 @@ namespace Service
             CreateMap<UserDto,Users>().ReverseMap();
             CreateMap<OrderingDto,Ordering>().ReverseMap();
             CreateMap<ReviewDto,Review>().ReverseMap();
+            CreateMap<PaypalDto, Paypal>().ReverseMap();
         }
     }
 }

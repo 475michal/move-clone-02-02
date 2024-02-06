@@ -22,33 +22,31 @@ namespace Service.Service
             this.mapper = mapper;
         }
 
-        public void Add(DriverDto entity)
-        {
-            repository.addItem(mapper.Map<Drivers>(entity));
 
+
+        public async Task Add(DriverDto entity)
+        {
+            await repository.addItem(mapper.Map<Drivers>(entity));
         }
 
-        public void delete(int id)
+        public async Task delete(int id)
         {
-            repository.delete(id);
-
+            await repository.delete(id);
         }
 
-        public DriverDto get(int id)
+        public async Task<DriverDto> get(int id)
         {
-            return mapper.Map<DriverDto>(repository.GetById(id));
-
+            return mapper.Map<DriverDto>(await repository.GetById(id));
         }
 
-        public List<DriverDto> getAll()
+        public async Task<List<DriverDto>> getAll()
         {
-            return mapper.Map<List<DriverDto>>(repository.GetAll());
+            return mapper.Map<List<DriverDto>>(await repository.GetAll());
         }
 
-        public void update(int id, DriverDto entity)
+        public async Task update(int id, DriverDto entity)
         {
-            repository.update(id, mapper.Map<Drivers>(entity));
-
+            await repository.update(id, mapper.Map<Drivers>(entity));
         }
     }
 }

@@ -23,28 +23,10 @@ namespace Service.Service
                 this.repository = repository;
                 this.mapper = mapper;
             }
-
-            public void Add(OrderingDto entity)
-            {
-                repository.addItem(mapper.Map<Ordering>(entity));
-            }
-
            
 
-            public void delete(int id)
-            {
-                repository.delete(id);
-            }
 
-            public OrderingDto get(int id)
-            {
-                return mapper.Map<OrderingDto>(repository.GetById(id));
-
-            }
-
-
-
-            public List<OrderingDto> getAll()
+            public async Task<List<OrderingDto>> getAll()
             {
                 return mapper.Map<List<OrderingDto>>(repository.GetAll());
 
@@ -52,9 +34,25 @@ namespace Service.Service
 
           
 
-            public void update(int id, OrderingDto entity)
+            public async Task update(int id, OrderingDto entity)
             {
                 repository.update(id, mapper.Map<Ordering>(entity));
+            }
+
+            public async Task Add(OrderingDto entity)
+            {
+                await repository.addItem(mapper.Map<Ordering>(entity));
+            }
+
+            public async Task delete(int id)
+            {
+                await repository.delete(id);
+
+            }
+
+            public async Task<OrderingDto> get(int id)
+            {
+                return mapper.Map<OrderingDto>(await repository.GetById(id));
             }
         }
     }

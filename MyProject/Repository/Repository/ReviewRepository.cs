@@ -1,4 +1,5 @@
-﻿using Repository.Entity;
+﻿using Microsoft.EntityFrameworkCore;
+using Repository.Entity;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -16,38 +17,38 @@ namespace Repository.Repository
             _context = context;
         }
 
-        public void addItem(Review entity)
+        public async Task addItem(Review entity)
         {
-            _context.reviews.Add(entity);
-            _context.save();
+            await _context.reviews.AddAsync(entity);
+            await _context.save();
         }
 
-        public void delete(int id)
+        public async Task delete(int id)
         {
-            _context.reviews.Remove(GetById(id));
-            _context.save();
+            _context.reviews.Remove(await GetById(id));
+            await _context.save();
         }
 
-        public List<Review> GetAll()
+        public async Task<List<Review>> GetAll()
         {
-            return _context.reviews.ToList();
+            return await _context.reviews.ToListAsync();
         }
 
-        public Review GetById(int id)
+        public async Task<Review> GetById(int id)
         {
-            return _context.reviews.FirstOrDefault(x => x.Id == id);
+            return await _context.reviews.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public void update(int id, Review entity)
+        public async Task update(int id, Review entity)
         {
-            Review review = GetById(id);
+            Review review = await GetById(id);
             review.UserId = entity.UserId;
-            review.DriverId = entity.DriverId;
+            review.OrderId = entity.OrderId;
             review.Comment = entity.Comment;
             review.Rating = entity.Rating;
             review.Date = entity.Date;
             review.Date = entity.Date;
-            _context.save();
+             await _context.save();
         }
     }
 }

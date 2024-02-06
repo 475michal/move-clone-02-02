@@ -1,4 +1,5 @@
-﻿using Repository.Entity;
+﻿using Microsoft.EntityFrameworkCore;
+using Repository.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,11 @@ namespace Repository.Interfaces
 {
     public interface IContext
     {
-        public List<Drivers> drivers { get; set; }
-        public List<Users> users { get; set; }
-        public List<Ordering> orderings { get; set; }
-        public List<Review> reviews { get; set; }
-        public void save();
+        public DbSet<Drivers> drivers { get; set; }
+        public DbSet<Users> users { get; set; }
+        public DbSet<Ordering> orderings { get; set; }
+        public DbSet<Review> reviews { get; set; }
+        public DbSet<Paypal> paypals { get; set; }
+        public Task save();
     }
 }

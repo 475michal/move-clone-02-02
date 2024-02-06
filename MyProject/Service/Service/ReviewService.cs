@@ -21,31 +21,31 @@ namespace Service.Service
             this.mapper = mapper;
         }
 
-        public void Add(ReviewDto entity)
+        public async Task Add(ReviewDto entity)
         {
-            repository.addItem(mapper.Map<Review>(entity));
+           await this.repository.addItem(mapper.Map<Review>(entity));
 
         }
 
-        public void delete(int id)
+        public async Task delete(int id)
         {
-            repository.delete(id);
+           await this.repository.delete(id);
         }
 
-        public ReviewDto get(int id)
+        public async Task<ReviewDto> get(int id)
         {
-            return mapper.Map<ReviewDto>(repository.GetById(id));
+            return mapper.Map<ReviewDto>(await this.repository.GetById(id));
         }
 
-        public List<ReviewDto> getAll()
+        public async Task<List<ReviewDto>> getAll()
         {
-            return mapper.Map<List<ReviewDto>>(repository.GetAll());
+            return mapper.Map<List<ReviewDto>>(await this.repository.GetAll());
 
         }
 
-        public void update(int id, ReviewDto entity)
+        public async Task update(int id, ReviewDto entity)
         {
-            repository.update(id, mapper.Map<Review>(entity));
+             await this.repository.update(id, mapper.Map<Review>(entity));
 
         }
     }

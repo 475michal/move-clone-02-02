@@ -1,4 +1,5 @@
-﻿using Repository.Entity;
+﻿using Microsoft.EntityFrameworkCore;
+using Repository.Entity;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -16,41 +17,41 @@ namespace Repository.Repository
             _context = context;
         }
 
-        public void addItem(Drivers entity)
+        public async Task addItem(Drivers entity)
         {
-            _context.drivers.Add(entity);
-            _context.save();
+            await _context.drivers.AddAsync(entity);
+            await _context.save();
         }
 
-        public void delete(int id)
+        public async Task delete(int id)
         {
-            _context.drivers.Remove(GetById(id));
-            _context.save();
+            _context.drivers.Remove(await GetById(id));
+            await _context.save();
         }
 
-        public List<Drivers> GetAll()
+        public async Task<List<Drivers>> GetAll()
         {
-            return _context.drivers.ToList();
+            return await _context.drivers.ToListAsync();
         }
 
-        public Drivers GetById(int id)
+        public async Task<Drivers> GetById(int id)
         {
-            return _context.drivers.FirstOrDefault(x => x.Id == id);
+            return await _context.drivers.FirstOrDefaultAsync(x => x.IdDriver == id);
 
         }
 
-        public void update(int id, Drivers entity)
+        public async Task update(int id, Drivers entity)
         {
-            Drivers drivers = GetById(id);
-            drivers.Name = entity.Name;
+            Drivers drivers = await GetById(id);
+            drivers.NameUser = entity.NameUser;
             drivers.Status = entity.Status;
-            drivers.PlacesInCar = entity.PlacesInCar;
+            drivers.ChoiseCar = entity.ChoiseCar;
             drivers.ContactMethod = entity.ContactMethod;
             drivers.PhoneNumber = entity.PhoneNumber;
             drivers.Status = entity.Status;
             drivers.Email = entity.Email;
             drivers.Location = entity.Location;
-            drivers.Rating = entity.Rating;
+            await _context.save();
         }
     }
 }

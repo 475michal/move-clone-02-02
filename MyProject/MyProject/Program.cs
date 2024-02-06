@@ -1,5 +1,5 @@
 using AutoMapper;
-using Mock;
+using DataContext;
 using Repository;
 using Repository.Interfaces;
 using Service;
@@ -14,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddServices();
-builder.Services.AddSingleton<IContext, MockContect>();
+builder.Services.AddSingleton<IContext, Db>();
 
 //builder.Services.AddScoped<ire>
 var app = builder.Build();

@@ -16,37 +16,37 @@ namespace MyProject.Controllers
         }
         // GET: api/<CompanyController>
         [HttpGet]
-        public List<UserDto> GetAll()
+        public async Task <List<UserDto>> GetAll()
         {
-            return service.getAll();
+            return  await service.getAll();
         }
 
         // GET api/<CompanyController>/5
         [HttpGet("{id}")]
-        public UserDto Get(int id)
+        public async Task< UserDto> Get(int id)
         {
-            return service.get(id);
+            return await service.get(id);
         }
 
         // POST api/<CompanyController>
         [HttpPost]
-        public void Post([FromBody] UserDto value)
+        public async Task Post([FromBody] UserDto value)
         {
-            service.Add(value);
+          await  service.Add(value);
         }
 
         // PUT api/<CompanyController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] UserDto value)
+        public async void Put(int id, [FromBody] UserDto value)
         {
-            service.update(id, value);
+           await service.update(id, value);
         }
 
         // DELETE api/<CompanyController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            service.delete(id);
+           await service.delete(id);
         }
     }
 }
