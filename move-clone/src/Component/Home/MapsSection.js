@@ -1,5 +1,7 @@
+/* global google */
+
 import React, { useContext, useEffect, useState } from "react";
-import { GoogleMap, MarkerF } from '@react-google-maps/api';
+import { DirectionsRenderer, GoogleMap, MarkerF, OverlayView } from '@react-google-maps/api';
 import { SourceContext } from "../Context/SourceContext";
 import { DestinationContext } from "../Context/DestinationContext";
 import icon1 from '../img/move.png';
@@ -16,9 +18,9 @@ function MapsSection() {
   });
 
   const { source } = useContext(SourceContext);
-  const { destination, setDestination } = useContext(DestinationContext);
-
-  const [map, setMap] = React.useState(null);
+  const { destination } = useContext(DestinationContext);
+  const [directionRoutePoints, setDirectionRoutePoints] = useState([]);
+  const [map, setMap] = useState(null);
 
   useEffect(() => {
     if (source && source.lat && source.lng && map) {
@@ -27,20 +29,26 @@ function MapsSection() {
         lng: source.lng
       });
     }
-  }, [source, map]);
-
-  useEffect(() => {
-    if (destination && destination.lat && destination.lng && map) {
-      map.panTo({
-        lat: destination.lat,
-        lng: destination.lng
-      });
-      setCenter({
-        lat: destination.lat,
-        lng: destination.lng
-      });
+    if (source && destination) {
+      directionRoute();
     }
-  }, [destination, map]);
+  }, [source, destination, map]);
+
+  const directionRoute = () => {
+    const directionsService = new google.maps.DirectionsService();
+
+    directionsService.route({
+      origin: { lat: source.lat, lng: source.lng },
+      destination: { lat: destination.lat, lng: destination.lng },
+      travelMode: google.maps.TravelMode.DRIVING
+    }, (result, status) => {
+      if (status === google.maps.DirectionsStatus.OK) {
+        setDirectionRoutePoints(result);
+      } else {
+        console.error('Error:', status);
+      }
+    });
+  };
 
   const onLoad = React.useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds(center);
@@ -61,27 +69,60 @@ function MapsSection() {
       onUnmount={onUnmount}
       options={{ mapId: '4113717525f11867' }}
     >
-      {source && source.lat && source.lng ? (
-        <MarkerF position={{ lat: source.lat, lng: source.lng }}
+      {source && (
+        <MarkerF
+          position={{ lat: source.lat, lng: source.lng }}
           icon={{
             url: icon1,
             scaledSize: {
               width: 40,
               height: 80
             }
-          }} />
-      ) : null}
+          }}
+        >
+          <OverlayView
+            position={{ lat: source.lat, lng: source.lng }}
+            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+          >
+            <div className="p-2 bg-white font-bold inline-block">
+              <p className="text-black text-[16px]">{source.label}</p>
+            </div>
+          </OverlayView>
+        </MarkerF>
+      )}
 
-      {destination && destination.lat && destination.lng ? (
-        <MarkerF position={{ lat: destination.lat, lng: destination.lng }}
+      {destination && (
+        <MarkerF
+          position={{ lat: destination.lat, lng: destination.lng }}
           icon={{
             url: icon1,
             scaledSize: {
               width: 40,
               height: 80
             }
-          }} />
-      ) : null}
+          }}
+        >
+          <OverlayView
+            position={{ lat: destination.lat, lng: destination.lng }}
+            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+          >
+            <div className="p-2 bg-white font-bold inline-block">
+              <p className="text-black text-[16px]">{destination.label}</p>
+            </div>
+          </OverlayView>
+        </MarkerF>
+      )}
+
+      <DirectionsRenderer
+        directions={directionRoutePoints}
+        options={{
+          polylineOptions: {
+            strokeColor: '#80cbc4',
+            strokeWeight: 5
+          },
+          suppressMarkers: true
+        }}
+      />
     </GoogleMap>
   );
 }
