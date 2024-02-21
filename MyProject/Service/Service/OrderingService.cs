@@ -24,15 +24,14 @@ namespace Service.Service
                 this.mapper = mapper;
             }
            
-
-
             public async Task<List<OrderingDto>> getAll()
             {
-                return mapper.Map<List<OrderingDto>>(repository.GetAll());
+                return mapper.Map<List<OrderingDto>>(await repository.GetAll());
+
 
             }
 
-          
+
 
             public async Task update(int id, OrderingDto entity)
             {

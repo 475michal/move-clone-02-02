@@ -49,9 +49,6 @@ namespace DataContext.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OrderingOrderId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -61,8 +58,6 @@ namespace DataContext.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdDriver");
-
-                    b.HasIndex("OrderingOrderId");
 
                     b.ToTable("drivers");
                 });
@@ -88,13 +83,7 @@ namespace DataContext.Migrations
                     b.Property<int>("DriverId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DriversIdDriver")
-                        .HasColumnType("int");
-
                     b.Property<int>("PaypalId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReviewId")
                         .HasColumnType("int");
 
                     b.Property<string>("Source")
@@ -108,18 +97,13 @@ namespace DataContext.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UsersUserId")
-                        .HasColumnType("int");
-
                     b.HasKey("OrderId");
 
-                    b.HasIndex("DriversIdDriver");
+                    b.HasIndex("DriverId");
 
                     b.HasIndex("PaypalId");
 
-                    b.HasIndex("ReviewId");
-
-                    b.HasIndex("UsersUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("orderings");
                 });
@@ -173,9 +157,6 @@ namespace DataContext.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OrderingOrderId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
@@ -184,25 +165,24 @@ namespace DataContext.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderingOrderId");
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("reviews");
                 });
 
             modelBuilder.Entity("Repository.Entity.Users", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrderingOrderId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -212,38 +192,22 @@ namespace DataContext.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ReviewId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserId");
-
-                    b.HasIndex("OrderingOrderId");
-
-                    b.HasIndex("ReviewId");
+                    b.HasKey("Id");
 
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("Repository.Entity.Drivers", b =>
-                {
-                    b.HasOne("Repository.Entity.Ordering", "Ordering")
-                        .WithMany()
-                        .HasForeignKey("OrderingOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ordering");
-                });
-
             modelBuilder.Entity("Repository.Entity.Ordering", b =>
                 {
-                    b.HasOne("Repository.Entity.Drivers", null)
+                    b.HasOne("Repository.Entity.Drivers", "Drivers")
                         .WithMany("OrderList")
-                        .HasForeignKey("DriversIdDriver");
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Repository.Entity.Paypal", "Paypal")
                         .WithMany()
@@ -251,45 +215,36 @@ namespace DataContext.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Repository.Entity.Review", "Review")
-                        .WithMany()
-                        .HasForeignKey("ReviewId")
+                    b.HasOne("Repository.Entity.Users", "User")
+                        .WithMany("OrderList")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Repository.Entity.Users", null)
-                        .WithMany("OrderList")
-                        .HasForeignKey("UsersUserId");
+                    b.Navigation("Drivers");
 
                     b.Navigation("Paypal");
 
-                    b.Navigation("Review");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Repository.Entity.Review", b =>
                 {
-                    b.HasOne("Repository.Entity.Ordering", null)
-                        .WithMany("ReviewList")
-                        .HasForeignKey("OrderingOrderId");
-                });
-
-            modelBuilder.Entity("Repository.Entity.Users", b =>
-                {
                     b.HasOne("Repository.Entity.Ordering", "Ordering")
-                        .WithMany()
-                        .HasForeignKey("OrderingOrderId")
+                        .WithMany("ReviewList")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Repository.Entity.Review", "Review")
+                    b.HasOne("Repository.Entity.Users", "User")
                         .WithMany()
-                        .HasForeignKey("ReviewId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Ordering");
 
-                    b.Navigation("Review");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Repository.Entity.Drivers", b =>

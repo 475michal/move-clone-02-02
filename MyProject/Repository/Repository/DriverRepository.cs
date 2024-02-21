@@ -36,7 +36,7 @@ namespace Repository.Repository
 
         public async Task<Drivers> GetById(int id)
         {
-            return await _context.drivers.FirstOrDefaultAsync(x => x.IdDriver == id);
+            return await _context.drivers.FirstOrDefaultAsync(x => x.Id == id);
 
         }
 
@@ -45,7 +45,7 @@ namespace Repository.Repository
             Drivers drivers = await GetById(id);
             drivers.NameUser = entity.NameUser;
             drivers.Status = entity.Status;
-            drivers.ChoiseCar = entity.ChoiseCar;
+           // drivers.ChoiseCar = entity.ChoiseCar;
             drivers.ContactMethod = entity.ContactMethod;
             drivers.PhoneNumber = entity.PhoneNumber;
             drivers.Status = entity.Status;

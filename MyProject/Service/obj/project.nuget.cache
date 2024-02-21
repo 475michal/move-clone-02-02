@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "45SfA3YGSiW4WiCeK9JRhnOsR5K6nw00QkoPPUNwKDd5DpCVi4xqbdzvcY8vcgjcDaBuDa9Xmt7rqGb6U448Kw==",
+  "dgSpecHash": "/S7CAo5A4kOwhdFgrDlSAJuzpHVi+02ZO+hGGVV2SNsad/8DJVnSTlC/syvmN1FWv6smZtkloNShEzm13VeDNQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Michal\\Desktop\\MyProject\\MyProject\\Service\\Service.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Michal\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
-    "C:\\Users\\Michal\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\6.0.0\\automapper.extensions.microsoft.dependencyinjection.6.0.0.nupkg.sha512",
+    "C:\\Users\\Michal\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\Michal\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\Michal\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Michal\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\Michal\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.4\\microsoft.data.sqlclient.2.1.4.nupkg.sha512",

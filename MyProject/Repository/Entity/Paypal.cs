@@ -11,10 +11,11 @@ namespace Repository.Entity
     public class Paypal
     {
         [Key]
-        public int PaypalId { get; set; }
+        public int Id { get; set; }
 
         public int OrderId { get; set; }
-        [ForeignKey("OrderId")]   
+        [ForeignKey("OrderId")]  
+        public virtual Ordering Ordering { get; set; }
 
         public int NumberCard { get; set; }
         public DateTime Validity { get; set; }

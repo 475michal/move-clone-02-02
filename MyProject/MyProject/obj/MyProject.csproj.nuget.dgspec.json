@@ -45,6 +45,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -86,14 +94,14 @@
         }
       }
     },
-    "C:\\Users\\Michal\\Desktop\\MyProject\\MyProject\\Mock\\DataContext.csproj": {
+    "C:\\Users\\Michal\\Desktop\\MyProject\\MyProject\\DataContext2\\DataContext2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Michal\\Desktop\\MyProject\\MyProject\\Mock\\DataContext.csproj",
-        "projectName": "DataContext",
-        "projectPath": "C:\\Users\\Michal\\Desktop\\MyProject\\MyProject\\Mock\\DataContext.csproj",
+        "projectUniqueName": "C:\\Users\\Michal\\Desktop\\MyProject\\MyProject\\DataContext2\\DataContext2.csproj",
+        "projectName": "DataContext2",
+        "projectPath": "C:\\Users\\Michal\\Desktop\\MyProject\\MyProject\\DataContext2\\DataContext2.csproj",
         "packagesPath": "C:\\Users\\Michal\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Michal\\Desktop\\MyProject\\MyProject\\Mock\\obj\\",
+        "outputPath": "C:\\Users\\Michal\\Desktop\\MyProject\\MyProject\\DataContext2\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -131,6 +139,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -144,10 +160,6 @@
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
-              "target": "Package",
-              "version": "[6.0.0, )"
-            },
-            "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.0, )"
             }
@@ -205,8 +217,8 @@
               "C:\\Users\\Michal\\Desktop\\MyProject\\MyProject\\Common\\Common.csproj": {
                 "projectPath": "C:\\Users\\Michal\\Desktop\\MyProject\\MyProject\\Common\\Common.csproj"
               },
-              "C:\\Users\\Michal\\Desktop\\MyProject\\MyProject\\Mock\\DataContext.csproj": {
-                "projectPath": "C:\\Users\\Michal\\Desktop\\MyProject\\MyProject\\Mock\\DataContext.csproj"
+              "C:\\Users\\Michal\\Desktop\\MyProject\\MyProject\\DataContext2\\DataContext2.csproj": {
+                "projectPath": "C:\\Users\\Michal\\Desktop\\MyProject\\MyProject\\DataContext2\\DataContext2.csproj"
               },
               "C:\\Users\\Michal\\Desktop\\MyProject\\MyProject\\Service\\Service.csproj": {
                 "projectPath": "C:\\Users\\Michal\\Desktop\\MyProject\\MyProject\\Service\\Service.csproj"
@@ -224,6 +236,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -321,6 +341,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -416,11 +444,11 @@
           "dependencies": {
             "AutoMapper": {
               "target": "Package",
-              "version": "[12.0.0, )"
+              "version": "[12.0.1, )"
             },
             "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
-              "version": "[6.0.0, )"
+              "version": "[12.0.1, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",

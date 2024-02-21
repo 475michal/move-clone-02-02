@@ -36,7 +36,7 @@ namespace Repository.Repository
 
         public async Task<Users> GetById(int UserId)
         {
-            return await _context.users.FirstOrDefaultAsync(x => x.UserId == UserId);
+            return await _context.users.FirstOrDefaultAsync(x => x.Id == UserId);
 
         }
 

@@ -36,7 +36,7 @@ namespace Repository.Repository
 
         public async Task<Paypal> GetById(int Id)
         {
-            return await _context.paypals.FirstOrDefaultAsync(x => x.PaypalId == Id);
+            return await _context.paypals.FirstOrDefaultAsync(x => x.Id == Id);
 
         }
 

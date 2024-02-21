@@ -1,5 +1,5 @@
 using AutoMapper;
-using DataContext;
+using DataContext2;
 using Repository;
 using Repository.Interfaces;
 using Service;
@@ -14,9 +14,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddServices();
-builder.Services.AddSingleton<IContext, Db>();
+builder.Services.AddSingleton<IContext, Db1>();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000",
+                               "http://www.contoso.com")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        }
+    );
+});
 
-//builder.Services.AddScoped<ire>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,7 +35,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
 }
+app.UseCors();
 
 app.UseHttpsRedirection();
 

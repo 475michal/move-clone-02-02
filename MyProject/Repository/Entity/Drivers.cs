@@ -19,23 +19,23 @@ namespace Repository.Entity
     public class Drivers
     {
         [Key]
-        public int IdDriver { get; set; }
+        public int Id { get; set; }
        // [ForeignKey("IdDriver")]
 
         public string NameUser { get; set; } //שם
         public string ContactMethod { get; set; } // יכול להכיל ערכים כמו "SMS", "Email", "Phone"
         public string Status { get; set; } //סטטוס פנוי או לא בסיום הנסיעה נהג מעדכן
         public string Location { get; set; } //מיקום
-        public KindCar ChoiseCar { get; set; } //מס' מקומות ברכב
+       // public KindCar ChoiseCar { get; set; } //מס' מקומות ברכב
         //public int Rating { get; set; }   //דרוג
         public string Email { get; set; } // שדה נוסף למייל
         public string PhoneNumber { get; set; } // שדה נוסף לטלפון
 
        //לדירוג יש נהג או לנהג יש דירוג
-      // public virtual Review Review { get; set; }
+       // public virtual ICollection<Review> ReviewList { get; set; }
 
         //לנהג יש הזמנות
-        public virtual Ordering Ordering { get; set; }
+       // public virtual Ordering Ordering { get; set; }
 
      
  

@@ -28,6 +28,7 @@ const GOOGLEMAP_KEY = 'AIzaSyBNVjEXhyDOUvcCECJFY5x_OGKt38dxVBk';
         service.getDetails({ placeId }, (place, status) => {
             if (status === 'OK' && place.geometry && place.geometry.location) {
                 console.log(place.geometry.location.lng());
+                
                 if (type === 'source') {
                     setSource({
                         lat: place.geometry.location.lat(),
@@ -51,7 +52,7 @@ const GOOGLEMAP_KEY = 'AIzaSyBNVjEXhyDOUvcCECJFY5x_OGKt38dxVBk';
 
     return (
 
-        <div className='bg-slate-200 p-3 rounded-lg mt-3 flex items-center gap-4'>
+        <div className="bg-slate-200 p-3 rounded-lg mt-3 flex items-center gap-4">
             <img src={move} width={25} height={45} alt="Move icon" />
             {/* <input type="text" placeholder={type=='source'?"Pickup Location":'Drop of Location'} 
                 className='bg-transparent w-full outline-none'/>*/}
@@ -65,7 +66,7 @@ const GOOGLEMAP_KEY = 'AIzaSyBNVjEXhyDOUvcCECJFY5x_OGKt38dxVBk';
                     },
                     placeholder: 'Pickup location',
                     isClearable: true,
-                    className: 'w-full',
+                    className: "w-full",
                     components: {
                         DropdownIndicator: false
                     },

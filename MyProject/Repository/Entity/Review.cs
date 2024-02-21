@@ -13,14 +13,17 @@ namespace Repository.Entity
 
         public int OrderId { get; set; }
         [ForeignKey("OrderId")]
+        public virtual Ordering Ordering { get; set; }
 
-        public int UserId { get; set; }
-        [ForeignKey("UserId")]
+        //public int UserId { get; set; }
+        //[ForeignKey("UserId")]
+       /// public virtual Users User { get; set; }
 
         public DateTime Date { get; set; }
         public int Rating { get; set; }  //דירוג
         public string Comment { get; set; } //הערות 
 
+        
 
     }
 }

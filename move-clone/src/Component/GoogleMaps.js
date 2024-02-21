@@ -14,17 +14,17 @@ const GoogleMap = () => {
   return (
     <SourceContext.Provider value={{ source, setSource }}>
       <DestinationContext.Provider value={{ destination, setDestination }}>
-       <LoadScript
-       libraries={['places']}
-        googleMapsApiKey={GOOGLEMAP_KEY}>
-        <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div>
-            <MapsSection />
+        <LoadScript libraries={['places']} googleMapsApiKey={GOOGLEMAP_KEY}>
+          <div className="container-fluid mt-5">
+            <div className="row">
+              <div className="col-md-8 order-md-2">
+                <MapsSection />
+              </div>
+              <div className="col-md-4 order-md-1">
+                <Search />
+              </div>
+            </div>
           </div>
-          <div className="col-span-2">
-            <Search />
-          </div>
-        </div>
         </LoadScript>
       </DestinationContext.Provider>
     </SourceContext.Provider>

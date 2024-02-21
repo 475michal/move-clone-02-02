@@ -18,9 +18,13 @@ namespace MyProject.Controllers
         }
         // GET: api/<CompanyController>
         [HttpGet]
-        public async Task<List<OrderingDto>> GetAll()
+        public async Task<List<OrderingDto>> Get()
         {
-            return await service.getAll();
+            
+                return await service.getAll();
+
+
+           
         }
 
         // GET api/<CompanyController>/5

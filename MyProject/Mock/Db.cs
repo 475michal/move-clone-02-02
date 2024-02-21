@@ -19,7 +19,7 @@ namespace DataContext
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
            
-            optionsBuilder.UseSqlServer("Server=LAPTOP-72POQIG8\\SQLEXPRESS;Database=master;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=LAPTOP-72POQIG8\\SQLEXPRESS;Database=Driver3;Trusted_Connection=True;");
 
         }
     }

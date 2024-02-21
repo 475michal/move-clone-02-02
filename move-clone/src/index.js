@@ -1,11 +1,18 @@
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.js'
-import './index.css'
+import './index.css';
+import { Provider } from 'react-redux';
+
 import { ClerkProvider } from '@clerk/clerk-react'
 import { BrowserRouter } from 'react-router-dom'
 import Header from './Component/Header.js'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
+import store from './Redux/store.js';
+
+
 
 
 
@@ -17,11 +24,13 @@ console.log("PUBLISHABLE_KEY:", PUBLISHABLE_KEY);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-        <Header />
-        <App />
-      </ClerkProvider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+          <Header />
+          <App />
+        </ClerkProvider>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );
