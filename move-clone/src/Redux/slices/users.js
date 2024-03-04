@@ -1,108 +1,71 @@
-import axios from "axios";
-import { BASE_URL } from "../API/URLs";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit"
+import axios from 'axios'
 
 const initialState = {
-    currentOrder: {
-        Email: null,
-        Password: null,
-        UserName: null,
-        PhoneNumber: null,
-    },
-    allOrdersPerCurrentOrder: []
+    User: [],
 }
 
-const User_URL = `${BASE_URL}/User/`;
-
-
-
-export const getAll = createAsyncThunk(
-    'Users/getAll',
-    async () => {
+export const fetchUser = createAsyncThunk(
+   
+    'User/fetchUser',
+    async (thunkAPI) => {
+        console.log('in fetchUser');
+         
         try {
-            const response = await axios.get(`${User_URL}`);
-            if (response.status === 200) {
-                return response.data;
-            } else {
-                console.log("not success");
-                return false;
-            }
+            const response = await axios.get('https://localhost:7185/api/User');
+            console.log('Data from server user:', response.data);
+            return response.data;
         } catch (error) {
-            console.log(error);
-            return (error.message);
+            console.error('Error fetching data from server:', error.message);
+            throw error;
+        }
+    }
+)
+
+
+export const addUserToServer = createAsyncThunk(
+    'User/addUserToServer',
+    async (payload) => {
+        
+        const { email, password,username } = payload;
+        try {
+            const response = await axios.post('https://localhost:7185/api/User', {
+                email: email,
+               password: password,
+                username: username,
+            });
+            console.log('User added successfully:', response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error adding user to server:', error.message);
+            return isRejectedWithValue(error);
         }
     }
 );
 
-export const getUsers = createAsyncThunk(
-    'Users/getUser',
-    async (id) => {
-        try {
-            const response = await axios.get(`${User_URL}${id}`);
-            if (response.status === 200) {
-                return response.data;
-            } else {
-                console.log("not success");
-                return false;
-            }
-        } catch (error) {
-            console.log(error);
-            return (error.message);
-        }
-    }
-);
-
-
-
-
-export const setUsers = createAsyncThunk(
-    'Users/setUsers',
-    async (User) => {
-        try {
-            const response = await axios.put(`${User_URL}${User.UserId}`, User);
-            if (response.status === 200) {
-                return response.data;
-            }
-        } catch (error) {
-            console.log("error" + error);
-            return (error.message);
-        }
-    }
-);
-
-
-export const addUsers = createAsyncThunk(
-    'Users/addUsers',
-    async (User) => {
-        try {
-            const response = await axios.post(`${User_URL}`, User);
-            if (response.status === 200) {
-                return response.data;
-            }
-        } catch (error) {
-            console.log("error" + error);
-            return (error.message);
-        }
-    }
-);
-
-export const UserSlice = createSlice({
-    name: 'Users',
+export const userSlice = createSlice({
+    name: 'User',
     initialState,
-    reducers: {
-
-    },
+    reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(getUsers.fulfilled, (state, action) => {
-            state.status = 'fulfilled';
-            state.Users = action.payload;
-        });
-        builder.addCase(addUsers.fulfilled, (state, action) => {
-            state.status = 'fulfilled';
-            state.details = action.payload;
-        });
-    }
+        builder
+            .addCase(fetchUser.fulfilled, (state, action) => {
+                state.status = 'fulfilled';
+                state.User = action.payload;
+            })
+            .addCase(fetchUser.rejected, (state, action) => {
+                state.status = 'rejected';
+                state.error = action.error.message;
+            })
+            .addCase(addUserToServer.fulfilled, (state, action) => {
+                state.status = 'fulfilled';
+                state.User = action.payload;
+            })
+            .addCase(addUserToServer.rejected, (state, action) => {
+                state.status = 'rejected';
+                state.error = action.error.message;
+            });
+    },
 });
-
-export const { } = UserSlice.actions;
-export default UserSlice.reducer;
+export const { } = userSlice.actions
+export default userSlice.reducer

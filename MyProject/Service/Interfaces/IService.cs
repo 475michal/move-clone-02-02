@@ -13,5 +13,6 @@ namespace Service.Interfaces
         public Task update(int id, T entity);
         public Task delete(int id);
         public Task Add(T entity);
+
     }
 }

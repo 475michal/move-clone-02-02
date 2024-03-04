@@ -12,7 +12,7 @@ namespace Repository.Entity
     public class Ordering
     {
         [Key]
-        public int OrderId { get; set; }
+        public int Id { get; set; }
         public int UserId { get; set; } // מפתח זר עבור המשתמש
         [ForeignKey("UserId")]
         public virtual Users User { get; set; }

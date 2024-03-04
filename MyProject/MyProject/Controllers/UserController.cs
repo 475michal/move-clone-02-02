@@ -28,13 +28,27 @@ namespace MyProject.Controllers
             return await service.get(id);
         }
 
-        // POST api/<CompanyController>
+       
+        // POST api/<UserController>
         [HttpPost]
-        public async Task Post([FromBody] UserDto value)
+        public async Task<IActionResult> Post([FromBody] UserDto value)
         {
-          await  service.Add(value);
-        }
+            // קבל את רשימת כל המשתמשים
+            var users = await service.getAll();
 
+            // בדוק אם כתובת האימייל שנשלחה כבר קיימת במסד הנתונים
+            if (users.Any(u => u.Email == value.Email))
+            {
+                // אם כן, החזר תגובת שגיאה
+                return Conflict("Email address already exists");
+            }
+
+            // אם הכתובת אימייל לא קיימת, הוסף את המשתמש למסד הנתונים
+            await service.Add(value);
+
+            // החזר תגובת הצלחה
+            return Ok();
+        }
         // PUT api/<CompanyController>/5
         [HttpPut("{id}")]
         public async void Put(int id, [FromBody] UserDto value)

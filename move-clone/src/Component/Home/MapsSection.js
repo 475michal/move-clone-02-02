@@ -1,28 +1,39 @@
 /* global google */
 
 
-import { DirectionsRenderer, GoogleMap, MarkerF, OverlayView } from '@react-google-maps/api';
+import { LoadScript, DirectionsRenderer, GoogleMap, MarkerF, OverlayView } from '@react-google-maps/api';
 import { SourceContext } from "../Context/SourceContext";
 import { DestinationContext } from "../Context/DestinationContext";
-import icon1 from '../img/move.png';
+
+import icondriver from '../../img/move-02.png';
+import iconstart from '../../img/move-start-02.png';
+import iconend from '../../img/move-end-02.png';
+
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import axios from 'axios';
+import { fetchDriverCoordinates } from '../../Redux/slices/drivers';
+import { useDispatch, useSelector } from 'react-redux';
 
 function MapsSection() {
   const containerStyle = {
     width: '100%',
-    height: window.innerWidth * 0.45
+    height: window.innerWidth * 0.43
   };
+  const GOOGLEMAP_KEY = 'AIzaSyBNVjEXhyDOUvcCECJFY5x_OGKt38dxVBk';
 
   const [center, setCenter] = useState({
-    lat: -3.745,
-    lng: -38.523
+    lat: 32.0524754,
+    lng: 34.9617757,
+    zoom: 40
+
   });
 
   const { source } = useContext(SourceContext);
   const { destination } = useContext(DestinationContext);
   const [directionRoutePoints, setDirectionRoutePoints] = useState([]);
   const [map, setMap] = useState(null);
+  const [selectedMarker, setSelectedMarker] = useState(null);
+
 
   const onLoad = useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds(center);
@@ -33,6 +44,8 @@ function MapsSection() {
   const onUnmount = useCallback(function callback() {
     setMap(null);
   }, []);
+
+
 
   useEffect(() => {
     if (source && source.lat && source.lng && map) {
@@ -54,66 +67,71 @@ function MapsSection() {
       destination: { lat: destination.lat, lng: destination.lng },
       travelMode: google.maps.TravelMode.DRIVING
     }, (result, status) => {
+
       if (status === google.maps.DirectionsStatus.OK) {
         setDirectionRoutePoints(result);
-        saveDataToServer({ source, destination, directionRoutePoints });
+        // saveDataToServer({ source, destination, directionRoutePoints });
       } else {
         console.error('Error:', status);
       }
     });
   };
+  
 
-  const saveDataToServer = async (data) => {
-    try {
-      const response = await fetch('YOUR_SERVER_ENDPOINT', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to save data to server');
-      }
-      const responseData = await response.json();
-      console.log('Data saved successfully:', responseData);
-    } catch (error) {
-      console.error('Error saving data to server:', error.message);
-    }
-  };
+  const driverCoordinates = useSelector(state => state.driver.data);
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+      dispatch(fetchDriverCoordinates());
+  }, [dispatch]);
+  
+  useEffect(() => {
+      console.log(driverCoordinates);
+  }, [driverCoordinates]);
 
-  // const try3 = async () => {
-  //   try {
-  //     const response = await axios.get('https://localhost:7185/api/Review');
-  //     if (response.status === 200) {
-  //       console.log(response.data);
-  //     } else {
-  //       console.error('Failed to save user credentials');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error saving user credentials:', error.message);
-  //   }
-  // };
 
   return (
     <div>
-      {/* <button onClick={try3}>try</button> */}
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
-        zoom={8}
+        zoom={40}
         onLoad={onLoad}
         onUnmount={onUnmount}
         options={{ mapId: '4113717525f11867' }}
       >
+       {driverCoordinates && driverCoordinates.map((coordinate, index) => (
+          <MarkerF
+            key={index}
+            position={{ lat: coordinate.lat, lng: coordinate.lng }}
+            icon={{
+              url: icondriver,
+              scaledSize: {
+                width: 70,
+                height: 60
+              }
+            }}
+            onClick={() => setSelectedMarker(coordinate)}
+          />
+        ))}
+
+        {selectedMarker && (
+          <OverlayView
+            position={{ lat: selectedMarker.lat, lng: selectedMarker.lng }}
+            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+          >
+            <div style={{ fontWeight: 'bolder',color:'#80CBC4' }}>{selectedMarker.name}</div>
+          </OverlayView>
+        )}
+
         {source && (
           <MarkerF
             position={{ lat: source.lat, lng: source.lng }}
             icon={{
-              url: icon1,
+              url: iconstart,
               scaledSize: {
-                width: 40,
-                height: 80
+                width:70,
+                height:60
               }
             }}
           >
@@ -132,10 +150,10 @@ function MapsSection() {
           <MarkerF
             position={{ lat: destination.lat, lng: destination.lng }}
             icon={{
-              url: icon1,
+              url: iconend,
               scaledSize: {
-                width: 40,
-                height: 80
+                width: 70,
+                height: 60
               }
             }}
           >
@@ -161,8 +179,9 @@ function MapsSection() {
           }}
         />
       </GoogleMap>
-    </div> 
+
+    </div>
   );
-} 
+}
 
 export default MapsSection;

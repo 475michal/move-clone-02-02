@@ -11,7 +11,7 @@ namespace Common.Entity
     public class PaypalDto
     {
      
-        public int PaypalId { get; set; }
+        public int Id { get; set; }
         public int OrderId { get; set; }
         public int NumberCard { get; set; }
         public DateTime Validity { get; set; }

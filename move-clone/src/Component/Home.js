@@ -1,40 +1,23 @@
 import React, { useEffect } from 'react';
 import { SignOutButton, SignInButton, SignedIn, SignedOut, useClerk } from "@clerk/clerk-react";
 import { useNavigate } from 'react-router-dom';
-import backgroundImg from "./img/bg-01.png";
+import backgroundImg from "../img/bg-01.png";
 import axios from 'axios';
 
 const Home = () => {
   const { openSignIn } = useClerk();
   const navigate = useNavigate();
 
-  
-  const saveUserCredentials = async (email, password) => {
-    try {
-      const response = await axios.post('https://localhost:7185/api/User', {
-        email: email,
-        password: password
-      });
-      if (response.status === 200) {
-        console.log('User credentials saved successfully');
-      } else {
-        console.error('Failed to save user credentials');
-      }
-    } catch (error) {
-      console.error('Error saving user credentials:', error.message);
-    }
-  };
+
 
   useEffect(() => {
     const checkAndAutoLogin = async () => {
       const user = await openSignIn();
       if (user) {
         console.log("המשתמש התחבר:", user);
-        // שמור את המייל והסיסמה במסד הנתונים
-        saveUserCredentials(user.email, user.password);
         // הפנייה לעמוד חדש בכניסה
-        navigate('/GoogleMaps')
-        // navigate('/CreateRoute');
+        navigate('/maps')
+       
       }
     };
 
@@ -59,8 +42,9 @@ const Home = () => {
         <p></p>
       </SignedOut>
       <SignedIn>
-        <SignOutButton onClick={() => navigate('/GoogleMaps')} />
+        <SignOutButton onClick={() => navigate('/maps')} />
         <p></p>
+        
       </SignedIn>
     </div>
   );

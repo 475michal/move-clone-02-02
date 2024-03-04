@@ -1,7 +1,7 @@
-import move4 from '../img/move4.png';
-import move4comfotable from '../img/move4-comfortable.png';
-import movejeep from '../img/move4-jeep.png'
-import move8xx from '../img/move8-xx.png';
+import move4 from '../../img/move4.png';
+import move4comfotable from '../../img/move4-comfortable.png';
+import movejeep from '../../img/move4-jeep.png'
+import move8xx from '../../img/move8-xx.png';
 
 
 export const CarListData=[

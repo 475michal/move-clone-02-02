@@ -46,7 +46,7 @@ namespace Repository.Repository
             users.Username = entity.Username;
             users.Password = entity.Password;
             users.Email = entity.Email;
-            users.PhoneNumber = entity.PhoneNumber;
+           // users.PhoneNumber = entity.PhoneNumber;
             await _context.save();
         }
     }

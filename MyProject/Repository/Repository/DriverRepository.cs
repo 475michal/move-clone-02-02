@@ -43,14 +43,16 @@ namespace Repository.Repository
         public async Task update(int id, Drivers entity)
         {
             Drivers drivers = await GetById(id);
-            drivers.NameUser = entity.NameUser;
+            drivers.NameDriver = entity.NameDriver;
             drivers.Status = entity.Status;
            // drivers.ChoiseCar = entity.ChoiseCar;
-            drivers.ContactMethod = entity.ContactMethod;
+           // drivers.ContactMethod = entity.ContactMethod;
             drivers.PhoneNumber = entity.PhoneNumber;
             drivers.Status = entity.Status;
             drivers.Email = entity.Email;
-            drivers.Location = entity.Location;
+            drivers.Password = entity.Password;
+            drivers.Lat = entity.Lat;
+            drivers.Lng = entity.Lng;
             await _context.save();
         }
     }

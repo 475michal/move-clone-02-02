@@ -1,7 +1,8 @@
 /* global google */
 
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
-import move from '../img/move.png';
+import movestart from '../../img/move-start-02.png';
+import moveend from '../../img/move-end-02.png';
 import { useContext, useEffect, useState } from 'react';
 import { SourceContext } from '../Context/SourceContext';
 import { DestinationContext } from '../Context/DestinationContext';
@@ -13,7 +14,7 @@ function InputItem({ type }) {
     const { source, setSource } = useContext(SourceContext);
     const { desitnation, setDestination } = useContext(DestinationContext);
 
-const GOOGLEMAP_KEY = 'AIzaSyBNVjEXhyDOUvcCECJFY5x_OGKt38dxVBk';
+    const GOOGLEMAP_KEY = 'AIzaSyBNVjEXhyDOUvcCECJFY5x_OGKt38dxVBk';
 
     useEffect(() => {
         type == 'source'
@@ -28,7 +29,8 @@ const GOOGLEMAP_KEY = 'AIzaSyBNVjEXhyDOUvcCECJFY5x_OGKt38dxVBk';
         service.getDetails({ placeId }, (place, status) => {
             if (status === 'OK' && place.geometry && place.geometry.location) {
                 console.log(place.geometry.location.lng());
-                
+
+
                 if (type === 'source') {
                     setSource({
                         lat: place.geometry.location.lat(),
@@ -53,11 +55,11 @@ const GOOGLEMAP_KEY = 'AIzaSyBNVjEXhyDOUvcCECJFY5x_OGKt38dxVBk';
     return (
 
         <div className="bg-slate-200 p-3 rounded-lg mt-3 flex items-center gap-4">
-            <img src={move} width={25} height={45} alt="Move icon" />
+            <img src={type === 'source' ? movestart : moveend} width={70} height={60} alt="Move icon" />
             {/* <input type="text" placeholder={type=='source'?"Pickup Location":'Drop of Location'} 
                 className='bg-transparent w-full outline-none'/>*/}
             <GooglePlacesAutocomplete
-              
+
                 selectProps={{
                     value,
                     onChange: (place) => {

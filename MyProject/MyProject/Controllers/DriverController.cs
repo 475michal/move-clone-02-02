@@ -20,7 +20,7 @@ namespace MyProject.Controllers
             this.service = service;
         }
 
-         [HttpGet]
+        [HttpGet]
         public async Task<List<DriverDto>> GetAll()
         {
             return await service.getAll();
@@ -31,20 +31,38 @@ namespace MyProject.Controllers
         {
             return await service.get(id);
         }
-       
 
-        // POST api/<DriverController>
         [HttpPost]
-        public async Task Post([FromBody] DriverDto value)
+        public async Task<IActionResult> Post([FromBody] DriverDto driverDto)
         {
-          await service.Add(value);
+            var drivers = await service.getAll();
+            var existingDriver = drivers.FirstOrDefault(u => u.Email == driverDto.Email);
+            if (existingDriver != null)
+            {
+                existingDriver.Lat = driverDto.Lat;
+                existingDriver.Lng = driverDto.Lng;
+                await service.update(existingDriver.Id, existingDriver);
+
+                return Ok("Location updated successfully");
+            }
+
+            if (drivers.Any(u => u.Email == driverDto.Email))
+            {
+                return Conflict("Email address already exists");
+            }
+
+            await service.Add(driverDto);
+            return Ok("Driver added successfully");
         }
+
+
+
 
         // PUT api/<DriverController>/5
         [HttpPut("{id}")]
         public async Task Put(int id, [FromBody] DriverDto value)
         {
-           await service.update(id, value);
+            await service.update(id, value);
         }
 
         // DELETE api/<DriverController>/5

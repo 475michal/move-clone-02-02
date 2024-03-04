@@ -1,101 +1,64 @@
-import axios from "axios";
-import { BASE_URL } from "../API/URLs";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit"
+import axios from 'axios'
 
 const initialState = {
-    currentOrder: {
-        Source: null,
-        Destination: null
-    },
-    allOrdersPerCurrentOrder: []
+    Ordering: [],
 }
 
-const orders_URL = `${BASE_URL}/ordering/`;
-
-export const getOrder = createAsyncThunk(
-    'Ordering/getOrder',
-    async (id) => {
+export const fetchOrdering = createAsyncThunk(
+   
+    'Ordering/fetchOrdering',
+    async (thunkAPI) => {
+        console.log('in fetchOrdering');
+       
         try {
-            const response = await axios.get(`${orders_URL}${id}`);
-            if (response.status === 200) {
-                return response.data;
-            } else {
-                console.log("not success");
-                return false;
-            }
+            const response = await axios.get('https://localhost:7185/api/Ordering');
+            console.log('Data from server Ordering:', response.data);
+            return response.data;
         } catch (error) {
-            console.log(error);
-            return (error.message);
+            console.error('Error fetching data from server:', error.message);
+            throw error;
         }
     }
-);
+)
 
-export const setOrdering = createAsyncThunk(
-    'Ordering/setOrdering',
-    async (ordering) => {
+export const addOrderingToServer = createAsyncThunk(
+    'Ordering/addOrderingToServer',
+    async (payload) => {
+        
+        const { status,choiseCar,source,destination,driveTime} = payload;
         try {
-            const response = await axios.put(`${orders_URL}${ordering.OrderId}`, {
-                OrderId: ordering.OrderId,
-                UserId: ordering.UserId,
-                DriverId: ordering.DriverId,
-                Status: ordering.Status,
-                ChoiseCar: ordering.ChoiseCar,
-                Source: ordering.Source,
-                Destination: ordering.Destination,
-                DriverTime: ordering.DriverTime
+            const response = await axios.post('https://localhost:7185/api/Ordering', {
+              status:"true",
+              choiseCar:choiseCar,
+              source:source,
+              destination:destination,
+              driveTime:driveTime,
             });
-            if (response.status === 200) {
-                return response.data;
-            }
+            console.log('Ordering added successfully:', response.data);
+            return response.data;
         } catch (error) {
-            console.log("error" + error);
-            return (error.message);
+            console.error('Error adding Ordering to server:', error.message);
+            return isRejectedWithValue(error);
         }
     }
 );
 
-
-export const addOrdering = createAsyncThunk(
-    'Ordering/addOrdering',
-    async (ordering) => {
-        try {
-            const response = await axios.post(`${orders_URL}`, {
-                OrderId: ordering.OrderId,
-                UserId: ordering.UserId,
-                DriverId: ordering.DriverId,
-                Status: ordering.Status,
-                ChoiseCar: ordering.ChoiseCar,
-                Source: ordering.Source,
-                Destination: ordering.Destination,
-                DriverTime: ordering.DriverTime
-            });
-            if (response.status === 200) {
-                return response.data;
-            }
-        } catch (error) {
-            console.log("error" + error);
-            return (error.message);
-        }
-    }
-);
-
-export const orderSlice = createSlice({
-    name: 'ordering',
+export const OrderingSlice = createSlice({
+    name: 'Ordering',
     initialState,
-    reducers: {
-
-    },
+    reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(getOrder.fulfilled, (state, action) => {
-            state.status = 'fulfilled';
-            state.ordering = action.payload;
-        });
-        builder.addCase(addOrdering.fulfilled, (state, action) => {
-            state.status = 'fulfilled';
-            state.details = action.payload;
-        });
-    }
+        builder
+            .addCase(fetchOrdering.fulfilled, (state, action) => {
+                state.status = 'fulfilled';
+                state.Ordering = action.payload;
+            })
+            .addCase(fetchOrdering.rejected, (state, action) => {
+                state.status = 'rejected';
+                state.error = action.error.message;
+            });
+    },
 });
-
-export const {} = orderSlice.actions;
-export default orderSlice.reducer;
+export const { } = OrderingSlice.actions
+export default OrderingSlice.reducer

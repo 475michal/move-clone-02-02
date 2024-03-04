@@ -36,7 +36,7 @@ namespace Repository.Repository
 
         public async Task<Ordering> GetById(int id)
         {
-            return await _context.orderings.FirstOrDefaultAsync(x => x.OrderId == id);
+            return await _context.orderings.FirstOrDefaultAsync(x => x.Id == id);
 
         }
 

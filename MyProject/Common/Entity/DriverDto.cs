@@ -16,14 +16,14 @@ namespace Common.Entity
     }
     public class DriverDto
     {
-        public int IdDriver { get; set; }
-        public string NameUser { get; set; } //שם
-        public string ContactMethod { get; set; } // יכול להכיל ערכים כמו "SMS", "Email", "Phone"
+
+        public int Id { get; set; }
+        public string NameDriver { get; set; } //שם
         public string Status { get; set; } //סטטוס פנוי או לא בסיום הנסיעה נהג מעדכן
-        public string Location { get; set; } //מיקום
-      //  public KindCar ChoiseCar { get; set; } //מס' מקומות ברכב
-        //public int Rating { get; set; }   //דרוג
+        public float Lat { get; set; } //מיקום
+        public float Lng { get; set; }
         public string Email { get; set; } // שדה נוסף למייל
+        public string Password { get; set; }
         public string PhoneNumber { get; set; } // שדה נוסף לטלפון
 
     }

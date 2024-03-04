@@ -11,9 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{62F91026-BD7F-4529-ABBC-99297B6C35B8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Context", "Context\Context.csproj", "{8EC8D967-95F3-4DA7-9CD1-A25BEA2C9689}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataContext2", "DataContext2\DataContext2.csproj", "{22721B83-F4A4-43B1-97E1-024B6DDF1D90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataContext2", "DataContext2\DataContext2.csproj", "{22721B83-F4A4-43B1-97E1-024B6DDF1D90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +35,6 @@ Global
 		{62F91026-BD7F-4529-ABBC-99297B6C35B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62F91026-BD7F-4529-ABBC-99297B6C35B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62F91026-BD7F-4529-ABBC-99297B6C35B8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8EC8D967-95F3-4DA7-9CD1-A25BEA2C9689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8EC8D967-95F3-4DA7-9CD1-A25BEA2C9689}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8EC8D967-95F3-4DA7-9CD1-A25BEA2C9689}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8EC8D967-95F3-4DA7-9CD1-A25BEA2C9689}.Release|Any CPU.Build.0 = Release|Any CPU
 		{22721B83-F4A4-43B1-97E1-024B6DDF1D90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{22721B83-F4A4-43B1-97E1-024B6DDF1D90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22721B83-F4A4-43B1-97E1-024B6DDF1D90}.Release|Any CPU.ActiveCfg = Release|Any CPU

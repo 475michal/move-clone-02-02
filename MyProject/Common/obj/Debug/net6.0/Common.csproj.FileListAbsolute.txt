@@ -1,5 +1,4 @@
 C:\Users\Michal\Desktop\MyProject\MyProject\Common\bin\Debug\net6.0\Common.deps.json
-C:\Users\Michal\Desktop\MyProject\MyProject\Common\bin\Debug\net6.0\Common.runtimeconfig.json
 C:\Users\Michal\Desktop\MyProject\MyProject\Common\bin\Debug\net6.0\Common.dll
 C:\Users\Michal\Desktop\MyProject\MyProject\Common\bin\Debug\net6.0\Common.pdb
 C:\Users\Michal\Desktop\MyProject\MyProject\Common\obj\Debug\net6.0\Common.csproj.AssemblyReference.cache
@@ -10,7 +9,6 @@ C:\Users\Michal\Desktop\MyProject\MyProject\Common\obj\Debug\net6.0\Common.cspro
 C:\Users\Michal\Desktop\MyProject\MyProject\Common\obj\Debug\net6.0\Common.dll
 C:\Users\Michal\Desktop\MyProject\MyProject\Common\obj\Debug\net6.0\refint\Common.dll
 C:\Users\Michal\Desktop\MyProject\MyProject\Common\obj\Debug\net6.0\Common.pdb
-C:\Users\Michal\Desktop\MyProject\MyProject\Common\obj\Debug\net6.0\Common.genruntimeconfig.cache
 C:\Users\Michal\Desktop\MyProject\MyProject\Common\obj\Debug\net6.0\ref\Common.dll
 C:\Users\116\Desktop\MyProject\Common\bin\Debug\net6.0\Common.deps.json
 C:\Users\116\Desktop\MyProject\Common\bin\Debug\net6.0\Common.runtimeconfig.json

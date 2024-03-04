@@ -20,7 +20,7 @@ namespace Common.Entity
     public class OrderingDto
     {
        
-        public int OrderId { get; set; }
+        public int Id { get; set; }
         public int UserId { get; set; } // מפתח זר עבור המשתמש
         public int DriverId { get; set; } // מפתח זר עבור הנהג
          public string Status { get; set; }
