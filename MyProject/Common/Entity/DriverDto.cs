@@ -6,14 +6,7 @@ using System.Threading.Tasks;
 
 namespace Common.Entity
 {
-   public enum KindCar
-    {
-        move4,
-        comfort4,
-        moveXL6,
-        black4
-        
-    }
+   
     public class DriverDto
     {
 
@@ -25,6 +18,7 @@ namespace Common.Entity
         public string Email { get; set; } // שדה נוסף למייל
         public string Password { get; set; }
         public string PhoneNumber { get; set; } // שדה נוסף לטלפון
+
 
     }
 }

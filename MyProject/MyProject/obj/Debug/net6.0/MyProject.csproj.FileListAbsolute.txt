@@ -154,3 +154,11 @@ C:\Users\116\Desktop\MyProject\MyProject\obj\Debug\net6.0\refint\MyProject.dll
 C:\Users\116\Desktop\MyProject\MyProject\obj\Debug\net6.0\MyProject.pdb
 C:\Users\116\Desktop\MyProject\MyProject\obj\Debug\net6.0\MyProject.genruntimeconfig.cache
 C:\Users\116\Desktop\MyProject\MyProject\obj\Debug\net6.0\ref\MyProject.dll
+C:\Users\Michal\Desktop\MyProject\MyProject\MyProject\bin\Debug\net6.0\Postmark.dll
+C:\Users\Michal\Desktop\MyProject\MyProject\MyProject\bin\Debug\net6.0\System.Text.Encodings.Web.dll
+C:\Users\Michal\Desktop\MyProject\MyProject\MyProject\bin\Debug\net6.0\System.Text.Json.dll
+C:\Users\Michal\Desktop\MyProject\MyProject\MyProject\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+C:\Users\Michal\Desktop\MyProject\MyProject\MyProject\bin\Debug\net6.0\MailKit.dll
+C:\Users\Michal\Desktop\MyProject\MyProject\MyProject\bin\Debug\net6.0\MimeKit.dll
+C:\Users\Michal\Desktop\MyProject\MyProject\MyProject\bin\Debug\net6.0\NETCore.MailKit.dll
+C:\Users\Michal\Desktop\MyProject\MyProject\MyProject\bin\Debug\net6.0\BouncyCastle.Crypto.dll

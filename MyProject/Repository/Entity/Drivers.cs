@@ -8,21 +8,12 @@ using System.Threading.Tasks;
 
 namespace Repository.Entity
 {
-    public enum KindCar
-    {
-        move4,
-        comfort4,
-        moveXL6,
-        black4
-
-    }
+   
     public class Drivers
     {
         
         [Key]
         public int Id { get; set; }
-       // [ForeignKey("IdDriver")]
-
         public string NameDriver{ get; set; } //שם
         public string Status { get; set; } //סטטוס פנוי או לא בסיום הנסיעה נהג מעדכן
         public float Lat { get; set; } //מיקום

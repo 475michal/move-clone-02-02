@@ -14,27 +14,31 @@ function DriverSearch() {
 
     const dispatch = useDispatch();
 
-    const handleAddDriver = () => {
+    const handleAddDriver = async () => {
+        console.log(await dispatch(fetchDriver()));
         
-           console.log( dispatch(fetchDriver()) );
-            if (source && user) {
-                const userEmail = user.emailAddresses.find(email => email.verification.status === 'verified');
-                console.log( user.firstName);
-                console.log( source.lat);
-                console.log( source.lng);
-                console.log( userEmail.emailAddress);
-                dispatch(addDriverToServer({               
+        if (source && user) {
+            const userEmail = user.emailAddresses.find(email => email.verification.status === 'verified');
+            console.log(user.firstName);
+            console.log(source.lat);
+            console.log(source.lng);
+            console.log(userEmail.emailAddress);
+            try {
+                await dispatch(addDriverToServer({               
                     nameDriver: user.firstName,
                     status: true,
                     lat: source.lat,
-                    lng:source.lng,
+                    lng: source.lng,
                     email: userEmail.emailAddress,
                     Password: "",
                     phoneNumber: ""
                 }));
+            } catch (error) {
+                console.error('Error adding driver to server:', error.message);
             }
-
+        }
     };
+    
     // const DriverData = {
     //     nameDriver: 'michal1',
     //     status: true,

@@ -69,15 +69,17 @@ namespace DataContext2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ChoiseCar")
-                        .HasColumnType("int");
+                    b.Property<string>("ChoiseCar")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Destination")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DriveTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("DriveTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DriverId")
                         .HasColumnType("int");
@@ -130,8 +132,7 @@ namespace DataContext2.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId")
-                        .IsUnique();
+                    b.HasIndex("OrderId");
 
                     b.ToTable("paypals");
                 });
@@ -197,7 +198,7 @@ namespace DataContext2.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Repository.Entity.Users", "User")
+                    b.HasOne("Repository.Entity.Users", "Users")
                         .WithMany("OrderList")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -205,14 +206,14 @@ namespace DataContext2.Migrations
 
                     b.Navigation("Drivers");
 
-                    b.Navigation("User");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Repository.Entity.Paypal", b =>
                 {
                     b.HasOne("Repository.Entity.Ordering", "Ordering")
-                        .WithOne("Paypal")
-                        .HasForeignKey("Repository.Entity.Paypal", "OrderId")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -237,9 +238,6 @@ namespace DataContext2.Migrations
 
             modelBuilder.Entity("Repository.Entity.Ordering", b =>
                 {
-                    b.Navigation("Paypal")
-                        .IsRequired();
-
                     b.Navigation("ReviewList");
                 });
 

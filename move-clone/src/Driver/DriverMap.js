@@ -18,22 +18,30 @@ function DriverMap() {
   const GOOGLEMAP_KEY = 'AIzaSyBNVjEXhyDOUvcCECJFY5x_OGKt38dxVBk';
 
   const [center, setCenter] = useState({
-    lat: 32.0524754,
-    lng: 34.9617757,
-    zoom: 20
+    lat: 32.0819,
+    lng: 34.8004,
 
   });
+
+  const bounds = {
+    north: 32.3272,
+    south: 32.0819,
+    east: 34.8557,
+    west: 34.8004,
+  };
+
   const source = useContext(Context);
   const [map, setMap] = useState(null);
   const [directionRoutePoints, setDirectionRoutePoints] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
 
   const onLoad = useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
+    const newBounds = new window.google.maps.LatLngBounds(bounds);
+    map.fitBounds(newBounds);
     setMap(map);
-  }, [center]);
+  }, []);
 
+  // Callback עבור הסרת המפה
   const onUnmount = useCallback(function callback() {
     setMap(null);
   }, []);

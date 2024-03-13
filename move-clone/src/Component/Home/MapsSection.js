@@ -13,6 +13,7 @@ import React, { useContext, useEffect, useState, useCallback } from "react";
 import axios from 'axios';
 import { fetchDriverCoordinates } from '../../Redux/slices/drivers';
 import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedDriverId } from '../../Redux/slices/orders';
 
 function MapsSection() {
   const containerStyle = {
@@ -22,10 +23,8 @@ function MapsSection() {
   const GOOGLEMAP_KEY = 'AIzaSyBNVjEXhyDOUvcCECJFY5x_OGKt38dxVBk';
 
   const [center, setCenter] = useState({
-    lat: 32.0524754,
-    lng: 34.9617757,
-    zoom: 40
-
+    lat: 32.0819,
+    lng: 34.8004,
   });
 
   const { source } = useContext(SourceContext);
@@ -33,31 +32,52 @@ function MapsSection() {
   const [directionRoutePoints, setDirectionRoutePoints] = useState([]);
   const [map, setMap] = useState(null);
   const [selectedMarker, setSelectedMarker] = useState(null);
+  const [selectedDriver, setSelectedDriver] = useState(null);
+
+  // const selectedDriverId = useSelector(state => state.orders.selectedDriverId);
 
 
+  // מיקום מרכז המפה וטווח התצוגה
+  // const center = {
+  //   lat: 32.7940463,
+  //   lng: 34.989571,
+  // };
+  const bounds = {
+    north: 32.3272,
+    south: 32.0819,
+    east: 34.8557,
+    west: 34.8004,
+  };
+
+  // Callback עבור טעינת המפה
   const onLoad = useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds(center);
-    map.fitBounds(bounds);
+    const newBounds = new window.google.maps.LatLngBounds(bounds);
+    map.fitBounds(newBounds);
     setMap(map);
-  }, [center]);
+  }, []);
 
+  // Callback עבור הסרת המפה
   const onUnmount = useCallback(function callback() {
     setMap(null);
   }, []);
-
 
 
   useEffect(() => {
     if (source && source.lat && source.lng && map) {
       setCenter({
         lat: source.lat,
-        lng: source.lng
+        lng: source.lng,
+        zoom: 14,
+        controlSize: 20,
       });
+
+  
     }
     if (source && destination) {
       directionRoute();
     }
   }, [source, destination, map]);
+
 
   const directionRoute = () => {
     const directionsService = new google.maps.DirectionsService();
@@ -76,17 +96,18 @@ function MapsSection() {
       }
     });
   };
-  
+
 
   const driverCoordinates = useSelector(state => state.driver.data);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
-      dispatch(fetchDriverCoordinates());
+    dispatch(fetchDriverCoordinates());
+    
   }, [dispatch]);
-  
+
   useEffect(() => {
-      console.log(driverCoordinates);
+    console.log(driverCoordinates);
   }, [driverCoordinates]);
 
 
@@ -94,13 +115,16 @@ function MapsSection() {
     <div>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={center}
-        zoom={40}
+        zoom={8}
+        center={{ lat: 32.0524754, lng: 34.9617757 }}
         onLoad={onLoad}
         onUnmount={onUnmount}
-        options={{ mapId: '4113717525f11867' }}
+        // options={{ mapId: '4113717525f11867' }}
+        options={{ streetViewControl: false, fullscreenControl: false }}
+        controlSize={20}
+
       >
-       {driverCoordinates && driverCoordinates.map((coordinate, index) => (
+        {driverCoordinates && driverCoordinates.map((coordinate, index) => (
           <MarkerF
             key={index}
             position={{ lat: coordinate.lat, lng: coordinate.lng }}
@@ -111,7 +135,13 @@ function MapsSection() {
                 height: 60
               }
             }}
-            onClick={() => setSelectedMarker(coordinate)}
+            onClick={() => {
+              setSelectedMarker(coordinate);      
+              console.log("id of driver"+coordinate.id);
+              setSelectedDriver(coordinate.id);
+              dispatch(setSelectedDriverId(coordinate.id)); // שליחת הנתון לרידקס
+              // קביעת הנהג הנבחר
+            }}
           />
         ))}
 
@@ -119,8 +149,11 @@ function MapsSection() {
           <OverlayView
             position={{ lat: selectedMarker.lat, lng: selectedMarker.lng }}
             mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+            onClick={() => setSelectedDriver(selectedMarker.id)      
+          }
+
           >
-            <div style={{ fontWeight: 'bolder',color:'#80CBC4' }}>{selectedMarker.name}</div>
+            <div style={{ fontWeight: 'bolder', color: '#80CBC4' }}>{selectedMarker.name}</div>
           </OverlayView>
         )}
 
@@ -130,8 +163,8 @@ function MapsSection() {
             icon={{
               url: iconstart,
               scaledSize: {
-                width:70,
-                height:60
+                width: 70,
+                height: 60
               }
             }}
           >
@@ -179,9 +212,12 @@ function MapsSection() {
           }}
         />
       </GoogleMap>
+    
+
 
     </div>
   );
 }
+
 
 export default MapsSection;

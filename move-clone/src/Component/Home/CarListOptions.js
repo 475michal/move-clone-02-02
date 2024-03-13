@@ -2,21 +2,58 @@ import React, { useState } from "react";
 import { CarListData } from "./CarListDate";
 import CarListItem from "./CarListItem";
 import { addOrderingToServer } from "../../Redux/slices/orders";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useClerk } from "@clerk/clerk-react";
+import { fetchUser, fetchUserEmail } from "../../Redux/slices/users";
 
-function CarListOptions({ distance, source, destination }) {
+function CarListOptions({id, distance, source, destination }) {
   const [selectedCar, setSelectedCar] = useState({});
   const [activeIndex, setActivedCar] = useState();
 
   const dispatch = useDispatch();
+  const driverCoordinates = useSelector(state => state.driver.data);
+  const selectedDriverId = useSelector(state => state.orders.selectedDriverId);
+  const selectedUserId = useSelector(state => state.users.User);
+  console.log('aa',selectedUserId);
+  const { user } = useClerk();
 
 
   //Add ordering
-  const Add = () => {
-    debugger
-    if (source && destination && selectedCar) {
-      dispatch(addOrderingToServer({ status: true, choiseCar: selectedCar.name, source: source.label, destination: destination.label, driveTime: Date.now() }));
-    }
+  const addOrdering = () => {
+    
+
+    if (source && destination && selectedCar && selectedDriverId) {
+
+      debugger
+      // console.log(users);  
+      // const idUser=users?.filter(u => u.email === emailAddress)[0]?.id;
+      // const idUser=selectedUserId.find(x=>x.email===emailAddress);
+      // const { emailAddress } = user.emailAddresses?.find((email) => email.verification.status === "verified") || {};
+      // const userEmail = user.emailAddresses.find(email => email.verification.status === 'verified');
+      // // selectedUserId.forEach(element => {
+        
+      // });
+      // console.log('s',selectedUserId);
+      // let idUser=selectedUserId?.map(x=>console.log('x',x));
+     
+
+      // const user = fetchUserEmail(emailAddress);
+    
+      // כאן תוכל לשלוף את ה־ID של המשתמש מהתוצאה שהתקבלה מ־fetchUser
+      // const fetchedUserId = user.id;
+      debugger
+              dispatch(addOrderingToServer({
+                iduser: id,
+                iddriver: selectedDriverId,
+                status: true,
+                choiseCar: selectedCar.name,
+                source: source.label,
+                destination: destination.label,
+                driveTime: new Date().toISOString(),
+              }));
+            } else {
+              console.log('User not found');
+            }
   };
 
 
@@ -41,7 +78,7 @@ function CarListOptions({ distance, source, destination }) {
           <h4>Make Payment For</h4>
           <button
             className="p-3 bg-black text-white text-center"
-            onClick={Add}
+            onClick={addOrdering}
           >
             Request {selectedCar.name}
           </button>

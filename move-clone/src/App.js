@@ -7,6 +7,8 @@ import FormDriver from "./Driver/FormDriver";
 import SignDriver from "./Driver/SignDriver";
 import CreateRoute from "./Component/Home/CreateRoute";
 import GoogleMaps from "./Component/Home/GoogleMaps"
+import SignUser from "./Component/Home/SignUser";
+import MyOrdering from "./Component/MyOrdering";
 //import "bootstrap/dist/css/bootstrap.min.css";
 //import "bootstrap/dist/js/bootstrap.min.js";
 
@@ -19,7 +21,10 @@ function App() {
         <Route path="/CreateRoute" element={<CreateRoute />} />
         <Route path="/maps" element={<GoogleMaps />} />
         <Route path="/DriverMap" element={<Maps />} />
-        <Route path="/SignDriver" element={<SignDriver/>}/>
+        <Route path="/SignDriver" element={<SignDriver />} />
+        <Route path="SignUser" element={<SignUser />} />
+        <Route path="MyOrdering" element={<MyOrdering />} />
+
 
       </Routes>
     </div>
