@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Repository.Entity
@@ -27,9 +28,15 @@ namespace Repository.Entity
         public string DriveTime { get; set; }
 
 
+        //public int ReviewId { get; set; } 
+        //[ForeignKey("ReviewId")]
+        //public virtual Review? Review { get; set; }
+        //public virtual Users User { get; set; }
 
-        //להזמנה יש הרבה דירוגים
-        public virtual ICollection<Review> ReviewList { get; set; }
+        // public virtual Drivers Driver { get; set; }
+       
+       // public virtual Review Review { get; set; }
+     
 
 
     }

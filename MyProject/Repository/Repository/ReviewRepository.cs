@@ -42,11 +42,10 @@ namespace Repository.Repository
         public async Task update(int id, Review entity)
         {
             Review review = await GetById(id);
-           //review.UserId = entity.UserId;
+            review.UserId = entity.UserId;
             review.OrderId = entity.OrderId;
             review.Comment = entity.Comment;
             review.Rating = entity.Rating;
-            review.Date = entity.Date;
             review.Date = entity.Date;
              await _context.save();
         }

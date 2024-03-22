@@ -18,7 +18,11 @@ namespace Common.Entity
         public string Email { get; set; } // שדה נוסף למייל
         public string Password { get; set; }
         public string PhoneNumber { get; set; } // שדה נוסף לטלפון
+                                                //   public string? VerificationCode { get; set; }
 
+        //public virtual ICollection<OrderingDto>? Orders { get; set; }
+
+        public virtual ICollection<ReviewDto>? Reviews { get; set; }
 
     }
 }

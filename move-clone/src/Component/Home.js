@@ -36,17 +36,18 @@ const Home = () => {
   
   return (
    
-    <div style={containerStyle}>
-      <SignedOut>
-        <SignInButton />
-        <p></p>
-      </SignedOut>
-      <SignedIn>
-        <SignOutButton onClick={() => navigate('/maps')} />
-        <p></p>
+  
+     <div style={containerStyle}>
+    {/* //   <SignedOut>
+    //     <SignInButton />
+    //     <p></p>
+    //   </SignedOut>
+    //   <SignedIn>
+    //     <SignOutButton onClick={() => navigate('/maps')} />
+    //     <p></p>
         
-      </SignedIn>
-    </div>
+    //   </SignedIn> */}
+     </div>
   );
 }
 

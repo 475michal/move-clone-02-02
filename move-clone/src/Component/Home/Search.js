@@ -24,7 +24,7 @@ function Search() {
     const { user } = useClerk();
     const navigate = useNavigate();
     let idUser;
-    const calculateDistance = () => {
+    const calculateDistance = async() => {
         const dist = google.maps.geometry.spherical.computeDistanceBetween(
             { lat: source.lat, lng: source.lng },
             { lat: destination.lat, lng: destination.lng }
@@ -38,11 +38,12 @@ function Search() {
             const userEmail = user.emailAddresses.find(email => email.verification.status === 'verified');
             if (userEmail) {
                 console.log('User email:', userEmail.emailAddress);
-                dispatch(fetchUser()).then((userData) => {
+                await dispatch(fetchUser()).then((userData) => {
                     debugger
-                    dispatch(addUserToServer({ email: userEmail.emailAddress, password: 'YourPassword', username: user.firstName }));
-                    // console.log('s',selectedUserId);
-                    // idUser=selectedUserId?.map(x=>x.email===userEmail.emailAddress);
+                    console.log(user.fullName+"user.fullName");
+                    console.log(userEmail.emailAddress);
+                     dispatch(addUserToServer({ username:user.fullName,email: userEmail.emailAddress, password: 'YourPassword'  }));
+                    
                     const userId = dispatch(fetchUser()).then(async (userI) => {
                         //    const id= x=>x.email===userEmail.emailAddress
                         const response = await axios.get('https://localhost:7185/api/User');

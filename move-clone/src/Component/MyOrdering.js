@@ -11,11 +11,16 @@ function MyOrdering() {
   const dispatch = useDispatch();
   const { user } = useClerk();
   const [nameDriver, setNameDriver] = useState('');
+  const [Driverid, setDriverid] = useState('');
   const [ratingWindowOpen, setRatingWindowOpen] = useState(false);
   const [selectedStars, setSelectedStars] = useState(0);
   const [notes, setNotes] = useState('');
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const [ratedOrders, setRatedOrders] = useState([]);
+  const [orders, setOrders] = useState([]);
+
+  const userData = useSelector(state => state.users.User);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -24,13 +29,14 @@ function MyOrdering() {
         const response = await axios.get('https://localhost:7185/api/User');
         const fetchedUser = response.data.find(x => x.email === userEmail.emailAddress);
         const userId = fetchedUser ? fetchedUser.id : null;
-        setSelectedUserId(userId); // אם אתה רוצה לשלוח את המזהה של המשתמש לצורך הדירוג
+        setSelectedUserId(userId);
         if (userId) {
-          dispatch(fetchUserById(userId));
+          await dispatch(fetchUserById(userId));
           const driverResponse = await dispatch(fetchDriver());
           const driverData = driverResponse.payload;
-          const driver = driverData.find(driver => driver.id === userId)?.nameDriver;
-          setNameDriver(driver);
+          const driver = driverData.find(driver => driver.id === userId);
+          setDriverid(driver.id)
+          setNameDriver(driver.nameDriver);
         }
       }
     };
@@ -38,7 +44,35 @@ function MyOrdering() {
     fetchUserData();
   }, [dispatch, user]);
 
-  const userData = useSelector(state => state.users.User);
+  useEffect(() => {
+    const fetchRatedOrders = async () => {
+      try {
+        
+        const response = await axios.get('https://localhost:7185/api/Review');
+        const ratedOrders = response.data.map(Review => Review.orderId);
+        console.log(ratedOrders);
+        setRatedOrders(ratedOrders);
+      } catch (error) {
+        console.error('Error fetching rated orders:', error);
+      }
+    };
+
+    fetchRatedOrders();
+  }, []);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        
+        const response = await axios.get('https://localhost:7185/api/Ordering');
+        setOrders(response.data);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
 
   const handleOpenRatingWindow = (orderId) => {
     setSelectedOrderId(orderId);
@@ -50,11 +84,13 @@ function MyOrdering() {
   };
 
   const handleSubmitRating = () => {
-    console.log('Submitted rating:', selectedStars, 'Notes:', notes);
+    console.log('Submitted rating:', selectedStars, 'Notes:', notes, Driverid);
     handleCloseRatingWindow();
+
     dispatch(addReviewToServer({
       orderid: selectedOrderId,
       userid: selectedUserId,
+      driveid: Driverid,
       date: new Date().toISOString(),
       rating: selectedStars,
       comment: notes
@@ -63,9 +99,9 @@ function MyOrdering() {
 
   return (
     <div>
-      <h4 style={{ textAlign: 'left' }}>My Orders</h4>
+      <h4 style={{ textAlign: 'left' }}>My Rated Orders</h4>
       <div className="row">
-        {userData && userData.orderList && userData.orderList.map(order => (
+        {userData && userData.orderList && orders.map(order => (
           <div key={order.id} className="col-md-4 mb-3" >
             <div className="card">
               <div className="card-body">
@@ -73,13 +109,21 @@ function MyOrdering() {
                 <p className="card-text">Date: {order.driveTime.split('T')[0]}</p>
                 <p className="card-text">Source: {order.source}</p>
                 <p className="card-text">Destination: {order.destination}</p>
+                <p className="card-text">Driver: {nameDriver}</p>
+               
                 <Button
                   variant="primary"
                   onClick={() => handleOpenRatingWindow(order.id)}
-                  style={{ backgroundColor: '#80cbc4', borderColor: '#80cbc4' }}
+                  style={{
+                    backgroundColor: '#80cbc4',
+                    borderColor: '#80cbc4',
+                    visibility: ratedOrders.includes(order.id) ? 'hidden' : 'visible',
+                  }}
+                  disabled={ratedOrders.includes(order.id)}
                 >
                   Add Rating to Driver {nameDriver}
                 </Button>
+
               </div>
             </div>
           </div>

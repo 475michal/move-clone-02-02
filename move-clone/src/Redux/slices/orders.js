@@ -5,6 +5,7 @@ const initialState = {
     selectedDriverId: null,
     // selectedUserId:null,
     Ordering: [],
+    ratedOrders:[]
 }
 
 export const fetchOrdering = createAsyncThunk(
@@ -31,13 +32,13 @@ export const addOrderingToServer = createAsyncThunk(
         debugger;
         try {
             const response = await axios.post('https://localhost:7185/api/Ordering', {
-                UserId: iduser,
-                DriverId: iddriver,
-                "Status": "true",
-                "ChoiseCar": choiseCar,
-                "Source": source,
-                "Destination": destination,
-                "DriveTime": driveTime
+                userId: iduser,
+                driverId: iddriver,
+                "status": "true",
+                "choiseCar": choiseCar,
+                "source": source,
+                "destination": destination,
+                "driveTime": driveTime
             });
             console.log('Ordering added successfully:', response.data);
             return response.data;
@@ -60,12 +61,10 @@ export const OrderingSlice = createSlice({
         setSelectedDriverId(state, action) {
             state.selectedDriverId = action.payload;
         },
+        addRatedOrder(state, action) {
+            state.ratedOrders.push(action.payload);
+        },
     },
-    // reducers: {
-    //     setSelectedUserId(state, action) {
-    //         debugger
-    //         state.selectedUserId = action.payload;
-    //     }
     
     extraReducers: (builder) => {
         builder
@@ -94,5 +93,5 @@ export const OrderingSlice = createSlice({
     },
 });
 export const { } = OrderingSlice.actions
-export const { setSelectedDriverId,setSelectedUserId } = OrderingSlice.actions;
+export const { setSelectedDriverId,addRatedOrder } = OrderingSlice.actions;
 export default OrderingSlice.reducer

@@ -63,6 +63,7 @@ function MapsSection() {
 
 
   useEffect(() => {
+    
     if (source && source.lat && source.lng && map) {
       setCenter({
         lat: source.lat,
@@ -149,9 +150,10 @@ function MapsSection() {
           <OverlayView
             position={{ lat: selectedMarker.lat, lng: selectedMarker.lng }}
             mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-            onClick={() => setSelectedDriver(selectedMarker.id)      
-          }
-
+            onClick={() => {
+              setSelectedDriver(selectedMarker.id); // שינוי הנהג הנבחר
+              console.log("id of driver: " + selectedMarker.id);
+            }}
           >
             <div style={{ fontWeight: 'bolder', color: '#80CBC4' }}>{selectedMarker.name}</div>
           </OverlayView>

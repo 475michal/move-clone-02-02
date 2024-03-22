@@ -21,6 +21,9 @@ namespace Common.Entity
         public string Destination { get; set; }
         public string DriveTime { get; set; }
 
+      
+        //public virtual ReviewDto? Review { get; set; }
+
 
     }
 }

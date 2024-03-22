@@ -4,8 +4,9 @@ import { DirectionsRenderer, GoogleMap, MarkerF, OverlayView } from "@react-goog
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Context } from "./Context/Context";
 import icon1 from '../img/move-02.png';
-import { fetchDriverCoordinates } from "../Redux/slices/drivers";
+import { fetchDriver, fetchDriverCoordinates } from "../Redux/slices/drivers";
 import { useDispatch, useSelector } from "react-redux";
+import iconstart from '../img/move-start-02.png';
 
 function DriverMap() {
 
@@ -56,15 +57,17 @@ function DriverMap() {
       setCenter({
         lat: source.lat,
         lng: source.lng
+
       });
-        
+
     }
-    directionRoute();
+    if (source) {
+      directionRoute();
+    }
   }, [source, map]);
-  
+
   const directionRoute = () => {
     const directionsService = new google.maps.DirectionsService();
-  
     directionsService.route({
       origin: { lat: source.lat, lng: source.lng },
       travelMode: google.maps.TravelMode.DRIVING
@@ -78,28 +81,30 @@ function DriverMap() {
   };
   const driverCoordinates = useSelector(state => state.driver.data);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
-      dispatch(fetchDriverCoordinates());
+    dispatch(fetchDriverCoordinates());
   }, [dispatch]);
-  
+
   useEffect(() => {
-      console.log(driverCoordinates);
+    console.log(driverCoordinates);
   }, [driverCoordinates]);
 
 
-  
+
   return (
     <div>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={center}
-        zoom={12}
+        zoom={8}
+        center={{ lat: 32.0524754, lng: 34.9617757 }}
         onLoad={onLoad}
         onUnmount={onUnmount}
-        options={{ mapId: '4113717525f11867' }}
+        // options={{ mapId: '4113717525f11867' }}
+        options={{ streetViewControl: false, fullscreenControl: false }}
+        controlSize={20}
       >
-         {driverCoordinates && driverCoordinates.map((coordinate, index) => (
+        {driverCoordinates && driverCoordinates.map((coordinate, index) => (
           <MarkerF
             key={index}
             position={{ lat: coordinate.lat, lng: coordinate.lng }}
@@ -119,15 +124,15 @@ function DriverMap() {
             position={{ lat: selectedMarker.lat, lng: selectedMarker.lng }}
             mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
           >
-            <div style={{ fontWeight: 'bolder',color:'#80CBC4' }}>{selectedMarker.name}</div>
+            <div style={{ fontWeight: 'bolder', color: '#80CBC4' }}>{selectedMarker.name}</div>
           </OverlayView>
         )}
-         
+
         {source && (
           <MarkerF
             position={{ lat: source.lat, lng: source.lng }}
             icon={{
-              url: icon1,
+              url: iconstart,
               scaledSize: {
                 width: 70,
                 height: 60

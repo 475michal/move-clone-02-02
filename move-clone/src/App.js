@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./Component/Home";
 import { useSelector } from "react-redux";
 import Maps from "./Driver/Maps";
-import FormDriver from "./Driver/FormDriver";
 import SignDriver from "./Driver/SignDriver";
 import CreateRoute from "./Component/Home/CreateRoute";
 import GoogleMaps from "./Component/Home/GoogleMaps"
@@ -21,10 +20,9 @@ function App() {
         <Route path="/CreateRoute" element={<CreateRoute />} />
         <Route path="/maps" element={<GoogleMaps />} />
         <Route path="/DriverMap" element={<Maps />} />
-        <Route path="/SignDriver" element={<SignDriver />} />
-        <Route path="SignUser" element={<SignUser />} />
+        {/* <Route path="/SignDriver" element={<SignDriver />} /> */}
+        {/* <Route path="SignUser" element={<SignUser />} /> */}
         <Route path="MyOrdering" element={<MyOrdering />} />
-
 
       </Routes>
     </div>

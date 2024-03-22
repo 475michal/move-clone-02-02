@@ -127,8 +127,9 @@ namespace DataContext2.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Validity")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Validity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -149,8 +150,15 @@ namespace DataContext2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Date")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DriverId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DriversId")
+                        .HasColumnType("int");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -158,7 +166,12 @@ namespace DataContext2.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("DriversId");
 
                     b.HasIndex("OrderId");
 
@@ -167,11 +180,11 @@ namespace DataContext2.Migrations
 
             modelBuilder.Entity("Repository.Entity.Users", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -193,7 +206,7 @@ namespace DataContext2.Migrations
             modelBuilder.Entity("Repository.Entity.Ordering", b =>
                 {
                     b.HasOne("Repository.Entity.Drivers", "Drivers")
-                        .WithMany("OrderList")
+                        .WithMany()
                         .HasForeignKey("DriverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -222,8 +235,12 @@ namespace DataContext2.Migrations
 
             modelBuilder.Entity("Repository.Entity.Review", b =>
                 {
+                    b.HasOne("Repository.Entity.Drivers", null)
+                        .WithMany("Reviews")
+                        .HasForeignKey("DriversId");
+
                     b.HasOne("Repository.Entity.Ordering", "Ordering")
-                        .WithMany("ReviewList")
+                        .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -233,12 +250,7 @@ namespace DataContext2.Migrations
 
             modelBuilder.Entity("Repository.Entity.Drivers", b =>
                 {
-                    b.Navigation("OrderList");
-                });
-
-            modelBuilder.Entity("Repository.Entity.Ordering", b =>
-                {
-                    b.Navigation("ReviewList");
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("Repository.Entity.Users", b =>

@@ -53,6 +53,9 @@ namespace Service.Service
             {
                 return mapper.Map<OrderingDto>(await repository.GetById(id));
             }
+
+            
+            
         }
     }
 

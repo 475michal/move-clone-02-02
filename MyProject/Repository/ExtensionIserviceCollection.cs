@@ -10,7 +10,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace Repository
 {
     public static class ExtensionIserviceCollection
@@ -23,6 +22,7 @@ namespace Repository
             services.AddScoped<IRepository<Review>, ReviewRepository>();
             services.AddScoped<IRepository<Ordering>, OrderingRepository>();
             services.AddScoped<IRepository<Paypal>, PaypalRepository>();
+
             return services;
         }
     }

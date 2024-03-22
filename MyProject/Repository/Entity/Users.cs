@@ -11,13 +11,13 @@ namespace Repository.Entity
     public class Users
     {
         [Key]
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
     
         //ללקוח יש הרבה הזמנות
-        public virtual ICollection<Ordering> ? OrderList { get; set; }
+        public virtual ICollection<Ordering>? OrderList { get; set; }
 
 
 

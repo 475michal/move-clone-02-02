@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { UserButton, useClerk } from '@clerk/clerk-react';
+import { SignIn, SignOutButton, UserButton, useClerk } from '@clerk/clerk-react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 
@@ -56,7 +56,7 @@ function Header() {
         }
     ];
 
-    
+
 
     return (
         <div className="p-5 pb-3 pl-10 border-b-4 border-gray-200 d-flex justify-content-between align-items-center">
@@ -74,17 +74,25 @@ function Header() {
                 <button onClick={() => navigate('/SignDriver')}>Your Driver?</button>
             </div> */}
 
-            <div className="d-flex justify-content-end align-items-left">
-                <NavDropdown title={<span className="fas fa-bars"></span>} id="basic-nav-dropdown" drop="start" alignRight={false} className="mr-2">
-                <NavDropdown.Item onClick={(e) => e.stopPropagation()}><UserButton /></NavDropdown.Item>
-                <NavDropdown.Item href="/SignDriver"> כניסה לנהג <img src={Driver} width={20} height={10} alt="Driver" /> </NavDropdown.Item>
-                    <NavDropdown.Item href="/SignUser">כניסה למשתמש  <img src={User} width={20} height={10} alt="Driver" />  </NavDropdown.Item>
-                    <NavDropdown.Item href="/MyOrdering">הזמנות שלי </NavDropdown.Item>
+            <div className="d-flex justify-content-end align-items-right">
+                <NavDropdown title={<span className="fa fa-bars"></span>} id="basic-nav-dropdown" drop="start" alignRight={false} className="mr-2">
+                    <NavDropdown.Item onClick={(e) => e.stopPropagation()}><UserButton /></NavDropdown.Item>
+                    {user ? (
+                        <>
+                            <NavDropdown.Item href="/DriverMap" className='fa fa-car'> Driver  <i className="fa fa-car"></i></NavDropdown.Item>
+                            <NavDropdown.Item href="/maps" className='fa fa-user'> <span> <i className="fa fa-user"></i> Order a driver to User </span> </NavDropdown.Item>
+                            <NavDropdown.Item href="/MyOrdering" >  ★ My Order </NavDropdown.Item>
+                            <NavDropdown.Item> <SignOutButton onClick={() => navigate('/Home')} /> </NavDropdown.Item>
+                        </>
+                    ) : (
+                        <NavDropdown.Item href="/Home">please Login</NavDropdown.Item>
+                    )}
                 </NavDropdown>
-                {/* <UserButton /> */}
-            </div>
 
+            {/* <UserButton /> */}
         </div>
+
+        </div >
     );
 }
 

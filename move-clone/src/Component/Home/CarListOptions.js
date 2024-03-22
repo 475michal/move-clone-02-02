@@ -14,35 +14,17 @@ function CarListOptions({id, distance, source, destination }) {
   const driverCoordinates = useSelector(state => state.driver.data);
   const selectedDriverId = useSelector(state => state.orders.selectedDriverId);
   const selectedUserId = useSelector(state => state.users.User);
-  console.log('aa',selectedUserId);
   const { user } = useClerk();
 
 
   //Add ordering
-  const addOrdering = () => {
+  const addOrdering = async() => {
     
 
     if (source && destination && selectedCar && selectedDriverId) {
 
       debugger
-      // console.log(users);  
-      // const idUser=users?.filter(u => u.email === emailAddress)[0]?.id;
-      // const idUser=selectedUserId.find(x=>x.email===emailAddress);
-      // const { emailAddress } = user.emailAddresses?.find((email) => email.verification.status === "verified") || {};
-      // const userEmail = user.emailAddresses.find(email => email.verification.status === 'verified');
-      // // selectedUserId.forEach(element => {
-        
-      // });
-      // console.log('s',selectedUserId);
-      // let idUser=selectedUserId?.map(x=>console.log('x',x));
-     
-
-      // const user = fetchUserEmail(emailAddress);
-    
-      // כאן תוכל לשלוף את ה־ID של המשתמש מהתוצאה שהתקבלה מ־fetchUser
-      // const fetchedUserId = user.id;
-      debugger
-              dispatch(addOrderingToServer({
+             await dispatch(addOrderingToServer({
                 iduser: id,
                 iddriver: selectedDriverId,
                 status: true,

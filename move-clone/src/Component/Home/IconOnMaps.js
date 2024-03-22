@@ -28,6 +28,7 @@ function IconOnMaps() {
             position={{ lat: driver.lat, lng: driver.lng }}
             icon={{
               url: icon1,
+              
               scaledSize: {
                 width: 40,
                 height: 80,

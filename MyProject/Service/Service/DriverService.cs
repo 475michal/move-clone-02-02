@@ -44,6 +44,9 @@ namespace Service.Service
             return mapper.Map<List<DriverDto>>(await repository.GetAll());
         }
 
+        
+
+
         public async Task update(int id, DriverDto entity)
         {
             await repository.update(id, mapper.Map<Drivers>(entity));

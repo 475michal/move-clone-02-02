@@ -21,10 +21,14 @@ namespace Repository.Entity
         public string Email { get; set; } // שדה נוסף למייל
         public string Password { get; set; } 
         public string PhoneNumber { get; set; } // שדה נוסף לטלפון
+                                                // public string? VerificationCode { get; set; }
 
- 
+
         //לנהג יש הרבה הזמנות
-        public virtual ICollection<Ordering> OrderList { get; set; }
+        //public virtual ICollection<Ordering> Orders { get; set; }
+
+        public virtual ICollection<Review> Reviews { get; set; }
+
 
     }
 }

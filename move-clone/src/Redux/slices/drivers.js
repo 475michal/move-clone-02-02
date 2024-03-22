@@ -21,6 +21,8 @@ export const fetchDriver = createAsyncThunk(
   }
 );
 
+
+
 export const fetchDriverCoordinates = createAsyncThunk(
   'driver/fetchDriverCoordinates',
   async (_, thunkAPI) => {
@@ -49,7 +51,6 @@ export const fetchDriverCoordinates = createAsyncThunk(
 
 
 
-
 export const addDriverToServer = createAsyncThunk(
   'Driver/addDriverToServer',
   async (payload) => {
@@ -67,13 +68,39 @@ export const addDriverToServer = createAsyncThunk(
         "PhoneNumber": phoneNumber,
       });
       console.log('Driver added successfully:', response.data);
-      return response.data;
+      const verificationCode=response.data.verificationCode;
+
+      return { ...response.data, verificationCode };
     } catch (error) {
       console.error('Error adding Driver to server:', error.message);
       return isRejectedWithValue(error);
     }
   }
 );
+
+
+
+
+// export const verifyVerificationCode = createAsyncThunk(
+  
+//   'Driver/verifyVerificationCode',
+//   async (payload) => {
+//     debugger
+//     const { email, code } = payload;
+//     try {
+//       const response = await axios.post('https://localhost:7185/api/Driver', {
+//         email: email,
+//         VerificationCode: code
+//       });
+//       console.log('Verification code verification:', response.data);
+//       return response.data;
+//     } catch (error) {
+//       console.error('Error verifying verification code:', error.message);
+//       return isRejectedWithValue(error);
+//     }
+//   }
+// );
+
 
 
 const DriverSlice = createSlice({
@@ -97,6 +124,7 @@ const DriverSlice = createSlice({
         state.loading = 'rejected';
         state.error = action.error.message;
       })
+    
       .addCase(fetchDriverCoordinates.pending, (state, action) => {
         state.loading = 'pending';
       })

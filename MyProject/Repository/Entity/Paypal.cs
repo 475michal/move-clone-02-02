@@ -18,7 +18,7 @@ namespace Repository.Entity
         public virtual Ordering Ordering { get; set; }
 
         public int NumberCard { get; set; }
-        public DateTime Validity { get; set; }
+        public string Validity { get; set; }
         public int Cvc { get; set; }
         public int Price { get; set; }
         public int IdentityCard { get; set; }//ת.ז.

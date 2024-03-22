@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ namespace Service.Interfaces
         public Task update(int id, T entity);
         public Task delete(int id);
         public Task Add(T entity);
+
 
     }
 }

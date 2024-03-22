@@ -3,10 +3,11 @@ import axios from 'axios'
 
 const initialState = {
     Review: [],
+    addedReviews: [],
+    ratedOrderIds: []
 }
 
 export const fetchReview = createAsyncThunk(
-
     'Review/fetchReview',
     async (thunkAPI) => {
         console.log('in fetchReview');
@@ -23,19 +24,17 @@ export const fetchReview = createAsyncThunk(
 )
 
 export const addReviewToServer = createAsyncThunk(
-
     'Review/addReviewToServer',
-    async ({ orderid, userid, date, rating, comment }) => {
-
+    async ({ orderid, userid,driveid, date, rating, comment }) => {
         try {
             debugger;
             const response = await axios.post('https://localhost:7185/api/Review', {
                 orderId: orderid,
                 userId: userid,
-                date: date,
-                rating: rating,
-                comment: comment,
-
+                driverId:driveid,
+                "date": date,
+                "rating": rating,
+                "comment": comment,
             });
             console.log('Review added successfully:', response.data);
             return response.data;
@@ -46,13 +45,10 @@ export const addReviewToServer = createAsyncThunk(
     }
 );
 
-
 export const ReviewSlice = createSlice({
-
     name: 'Review',
     initialState,
     reducers: {},
-
     extraReducers: (builder) => {
         builder
             .addCase(fetchReview.pending, (state, action) => {
@@ -72,6 +68,7 @@ export const ReviewSlice = createSlice({
             .addCase(addReviewToServer.fulfilled, (state, action) => {
                 state.loading = 'fulfilled';
                 state.data = action.payload;
+                state.ratedOrderIds.push(action.payload.orderId); // הוספת מזהה הזמנה שכבר דורגה למערך
             })
             .addCase(addReviewToServer.rejected, (state, action) => {
                 state.loading = 'rejected';
@@ -79,5 +76,6 @@ export const ReviewSlice = createSlice({
             });
     },
 });
+
 export const { } = ReviewSlice.actions
 export default ReviewSlice.reducer
