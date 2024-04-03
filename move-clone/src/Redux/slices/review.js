@@ -23,6 +23,22 @@ export const fetchReview = createAsyncThunk(
     }
 )
 
+export const fetchReviewById = createAsyncThunk(
+    'Review/fetchReviewById',
+    async (id, thunkAPI) => {
+        console.log('Fetching review by ID:', id);
+
+        try {
+            const response = await axios.get(`https://localhost:7185/api/Review/${id}`);
+            console.log('Data from server Review:', response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching data from server:', error.message);
+            throw error;
+        }
+    }
+)
+
 export const addReviewToServer = createAsyncThunk(
     'Review/addReviewToServer',
     async ({ orderid, userid,driveid, date, rating, comment }) => {

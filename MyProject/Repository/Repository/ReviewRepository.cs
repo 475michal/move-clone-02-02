@@ -49,5 +49,10 @@ namespace Repository.Repository
             review.Date = entity.Date;
              await _context.save();
         }
+        public async Task<List<Review>> GetAllAsync()
+        {
+            return await _context.reviews.ToListAsync();
+        }
+
     }
 }

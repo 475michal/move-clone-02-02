@@ -23,7 +23,6 @@ namespace Service.Service
         }
 
 
-
         public async Task Add(DriverDto entity)
         {
             await repository.addItem(mapper.Map<Drivers>(entity));
@@ -51,5 +50,11 @@ namespace Service.Service
         {
             await repository.update(id, mapper.Map<Drivers>(entity));
         }
+        public async Task<List<DriverDto>> GetByDriverId(int driverId)
+        {
+            var allDrivers = await repository.GetAll();
+            return mapper.Map<List<DriverDto>>(allDrivers.Where(driver => driver.Id == driverId));
+        }
+
     }
 }

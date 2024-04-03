@@ -11,9 +11,11 @@ import iconend from '../../img/move-end-02.png';
 
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import axios from 'axios';
-import { fetchDriverCoordinates } from '../../Redux/slices/drivers';
+import { fetchDriver, fetchDriverCoordinates } from '../../Redux/slices/drivers';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedDriverId } from '../../Redux/slices/orders';
+import { fetchReview } from '../../Redux/slices/review';
+import { useClerk } from '@clerk/clerk-react';
 
 function MapsSection() {
   const containerStyle = {
@@ -33,6 +35,9 @@ function MapsSection() {
   const [map, setMap] = useState(null);
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [selectedDriver, setSelectedDriver] = useState(null);
+  const [travelTime, setTravelTime] = useState(null);
+
+  const { user } = useClerk();
 
   // const selectedDriverId = useSelector(state => state.orders.selectedDriverId);
 
@@ -48,12 +53,16 @@ function MapsSection() {
     east: 34.8557,
     west: 34.8004,
   };
+  const directionsService = new google.maps.DirectionsService();
+  const directionsRenderer = new google.maps.DirectionsRenderer();
+
 
   // Callback עבור טעינת המפה
   const onLoad = useCallback(function callback(map) {
     const newBounds = new window.google.maps.LatLngBounds(bounds);
     map.fitBounds(newBounds);
     setMap(map);
+    directionsRenderer.setMap(map);
   }, []);
 
   // Callback עבור הסרת המפה
@@ -63,7 +72,7 @@ function MapsSection() {
 
 
   useEffect(() => {
-    
+
     if (source && source.lat && source.lng && map) {
       setCenter({
         lat: source.lat,
@@ -72,7 +81,7 @@ function MapsSection() {
         controlSize: 20,
       });
 
-  
+
     }
     if (source && destination) {
       directionRoute();
@@ -104,12 +113,74 @@ function MapsSection() {
 
   useEffect(() => {
     dispatch(fetchDriverCoordinates());
-    
+
   }, [dispatch]);
 
   useEffect(() => {
     console.log(driverCoordinates);
   }, [driverCoordinates]);
+
+  const [driverReview, setDriverReviews] = useState([]);
+
+  const showReview = async (driverId) => {
+
+    if (driverId) {
+
+      await dispatch(fetchReview()).then(reviewResponse => {
+        const reviewData = reviewResponse.payload;
+        const driverReviews = reviewData.filter(review => review.driverId === driverId);
+
+        // Here you can display the ratings in the popup panel using driverReviews
+        console.log('Driver Reviews:', driverReviews);
+        setDriverReviews(driverReviews);
+        driverReviews.forEach(review => {
+          console.log('Rating:', review.rating);
+          console.log('Comment:', review.comment);
+        });
+
+
+      }).catch(error => {
+        console.error('Error fetching review data:', error.message);
+      });
+    } else {
+      console.error('Driver not found');
+    }
+  };
+
+  useEffect(() => {
+    if (source && destination && map) {
+      directionsService.route({
+        origin: source,
+        destination: destination,
+        travelMode: google.maps.TravelMode.DRIVING
+      }, (response, status) => {
+        if (status === 'OK') {
+          directionsRenderer.setDirections(response);
+          const route = response.routes[0];
+          const travelTime = route.legs[0].duration.text;
+          setTravelTime(travelTime);
+  
+          const infoWindowContent = `
+            <div>
+              <p>Estimated travel time: ${travelTime}</p>
+            </div>
+          `;
+          
+          const infoWindow = new google.maps.InfoWindow({
+            content: infoWindowContent
+          });
+          
+          const midpointIndex = Math.floor(route.overview_path.length / 2);
+          const midpoint = route.overview_path[midpointIndex];
+          infoWindow.setPosition(midpoint);
+          infoWindow.open(map);
+  
+        } else {
+          console.error('Directions request failed due to ' + status);
+        }
+      });
+    }
+  }, [source, destination, map]);
 
 
   return (
@@ -137,11 +208,12 @@ function MapsSection() {
               }
             }}
             onClick={() => {
-              setSelectedMarker(coordinate);      
-              console.log("id of driver"+coordinate.id);
+              setSelectedMarker(coordinate);
+              console.log("id of driver" + coordinate.id);
               setSelectedDriver(coordinate.id);
               dispatch(setSelectedDriverId(coordinate.id)); // שליחת הנתון לרידקס
               // קביעת הנהג הנבחר
+              showReview(coordinate.id);
             }}
           />
         ))}
@@ -151,13 +223,39 @@ function MapsSection() {
             position={{ lat: selectedMarker.lat, lng: selectedMarker.lng }}
             mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
             onClick={() => {
-              setSelectedDriver(selectedMarker.id); // שינוי הנהג הנבחר
+              setSelectedDriver(selectedMarker.id);
               console.log("id of driver: " + selectedMarker.id);
             }}
           >
-            <div style={{ fontWeight: 'bolder', color: '#80CBC4' }}>{selectedMarker.name}</div>
+            <div style={{ backgroundColor: '#80cbc4', color: 'white', width: '150px', position: 'relative' }} className="carousel container p-4 rounded">
+              <button className="btn-close" onClick={() => { setSelectedDriver(null); setSelectedMarker(null); setDriverReviews([]); }} style={{ position: 'absolute', top: '7px', right: '10px', background: 'none', border: 'none', color: 'white' }}>×</button>
+              <h5 style={{ color: 'white', textAlign: 'center', marginBottom: '15px' }}>{selectedMarker.name}</h5>
+              <div id="driverCarousel" className="carousel slide" data-ride="carousel">
+                <div className="carousel-inner">
+                  {driverReview.map((review, index) => (
+                    <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                      <h6 style={{ color: 'white' }}>Rating: {review.rating}</h6>
+                      <p style={{ color: 'white' }}>Comment: {review.comment}</p>
+                    </div>
+                  ))}
+                </div>
+                <button className="carousel-control-prev" type="button" data-bs-target="#driverCarousel" data-bs-slide="prev" style={{ top: '60px', width: '15px', background: 'none', border: 'none', color: 'white' }}>
+                  <span className="carousel-control-prev-icon" style={{ fontSize: '1.5rem' }} aria-hidden="true"></span>
+                </button>
+                <button className="carousel-control-next" type="button" data-bs-target="#driverCarousel" data-bs-slide="next" style={{ top: '60px', width: '15px', background: 'none', border: 'none', color: 'white' }}>
+                  <span className="carousel-control-next-icon" style={{ fontSize: '1.5rem' }} aria-hidden="true"></span>
+                </button>
+                <ol className="carousel-indicators" style={{ position: 'absolute', width: '70px', bottom: '-33px', left: '37%', transform: 'translateX(-50%)' }}>
+                  {driverReview.map((_, index) => (
+                    <li key={index} data-bs-target="#driverCarousel" data-bs-slide-to={index} className={index === 0 ? 'active' : ''} style={{ display: 'block', width: '10px', height: '10px', backgroundColor: 'white', borderRadius: '50%', margin: '0 5px' }}></li>
+                  ))}
+                </ol>
+              </div>
+            </div>
           </OverlayView>
         )}
+
+
 
         {source && (
           <MarkerF
@@ -214,12 +312,9 @@ function MapsSection() {
           }}
         />
       </GoogleMap>
-    
-
-
+      {/* {travelTime && <p>Estimated travel time: {travelTime}</p>} */}
     </div>
   );
 }
-
 
 export default MapsSection;

@@ -20,8 +20,6 @@ function App() {
         <Route path="/CreateRoute" element={<CreateRoute />} />
         <Route path="/maps" element={<GoogleMaps />} />
         <Route path="/DriverMap" element={<Maps />} />
-        {/* <Route path="/SignDriver" element={<SignDriver />} /> */}
-        {/* <Route path="SignUser" element={<SignUser />} /> */}
         <Route path="MyOrdering" element={<MyOrdering />} />
 
       </Routes>

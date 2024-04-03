@@ -5,37 +5,47 @@ import { addOrderingToServer } from "../../Redux/slices/orders";
 import { useDispatch, useSelector } from "react-redux";
 import { useClerk } from "@clerk/clerk-react";
 import { fetchUser, fetchUserEmail } from "../../Redux/slices/users";
+import { Button, Modal } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
-function CarListOptions({id, distance, source, destination }) {
+function CarListOptions({ id, distance, source, destination }) {
   const [selectedCar, setSelectedCar] = useState({});
   const [activeIndex, setActivedCar] = useState();
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const driverCoordinates = useSelector(state => state.driver.data);
   const selectedDriverId = useSelector(state => state.orders.selectedDriverId);
   const selectedUserId = useSelector(state => state.users.User);
   const { user } = useClerk();
-
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => {
+    setShowModal(false);
+    navigate('/Home');
+    };
+  const [showModal, setShowModal] = useState(false);
 
   //Add ordering
-  const addOrdering = async() => {
-    
+  const addOrdering = async () => {
+
 
     if (source && destination && selectedCar && selectedDriverId) {
 
       debugger
-             await dispatch(addOrderingToServer({
-                iduser: id,
-                iddriver: selectedDriverId,
-                status: true,
-                choiseCar: selectedCar.name,
-                source: source.label,
-                destination: destination.label,
-                driveTime: new Date().toISOString(),
-              }));
-            } else {
-              console.log('User not found');
-            }
+      await dispatch(addOrderingToServer({
+        iduser: id,
+        iddriver: selectedDriverId,
+        status: true,
+        choiseCar: selectedCar.name,
+        source: source.label,
+        destination: destination.label,
+        driveTime: new Date().toISOString(),
+      }));
+      handleShowModal();
+
+
+    } else {
+      console.log('User not found');
+    }
   };
 
 
@@ -61,14 +71,28 @@ function CarListOptions({id, distance, source, destination }) {
           <button
             className="p-3 bg-black text-white text-center"
             onClick={addOrdering}
+
           >
             Request {selectedCar.name}
           </button>
         </div>
       )}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>The order is on its way to you</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Thank you for your invitation. <br />The order confirmation has been sent to your email, please check your inbox.</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+          {/* Update the text on the Confirm Payment button */}
 
-      {/* Display the DriverMap component
-      {selectedCar.name && <DriverMap selectedCar={selectedCar} />} */}
+        </Modal.Footer>
+      </Modal>
+
     </div>
   );
 };

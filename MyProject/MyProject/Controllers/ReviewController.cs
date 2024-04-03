@@ -49,5 +49,9 @@ namespace MyProject.Controllers
         {
            await service.delete(id);
         }
+        
+
     }
 }
+        //פונקציה שמקבלת דירוג לפי נהג
+        // להוסיף בריפוסטורי וגם  בסרבייס 

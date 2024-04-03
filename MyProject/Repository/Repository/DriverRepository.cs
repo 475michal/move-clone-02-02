@@ -31,12 +31,14 @@ namespace Repository.Repository
 
         public async Task<List<Drivers>> GetAll()
         {
+
             return await _context.drivers.ToListAsync();
         }
 
         public async Task<Drivers> GetById(int id)
         {
             return await _context.drivers.FirstOrDefaultAsync(x => x.Id == id);
+
 
         }
 
@@ -55,5 +57,6 @@ namespace Repository.Repository
             drivers.Lng = entity.Lng;
             await _context.save();
         }
+       
     }
 }

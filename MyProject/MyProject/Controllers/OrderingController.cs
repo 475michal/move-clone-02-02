@@ -32,6 +32,7 @@ namespace MyProject.Controllers
         public async Task<OrderingDto> Get(int id)
         {
             return await service.get(id);
+        //שליחת מייל
         }
 
         // POST api/<CompanyController>

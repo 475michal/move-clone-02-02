@@ -24,10 +24,10 @@ namespace Repository.Entity
                                                 // public string? VerificationCode { get; set; }
 
 
-        //לנהג יש הרבה הזמנות
+        //לנהג יש הרבה דירוגים
         //public virtual ICollection<Ordering> Orders { get; set; }
 
-        public virtual ICollection<Review> Reviews { get; set; }
+        public virtual ICollection<Review>? Reviews { get; set; }
 
 
     }

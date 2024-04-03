@@ -48,7 +48,21 @@ export const fetchDriverCoordinates = createAsyncThunk(
 );
 
 
+export const fetchDriverById = createAsyncThunk(
+  'Review/fetchReviewById',
+  async (id, thunkAPI) => {
+      console.log('Fetching review by ID:', id);
 
+      try {
+          const response = await axios.get(`https://localhost:7185/api/driver/${id}`);
+          console.log('Data from server Review:', response.data);
+          return response.data;
+      } catch (error) {
+          console.error('Error fetching data from server:', error.message);
+          throw error;
+      }
+  }
+)
 
 
 export const addDriverToServer = createAsyncThunk(

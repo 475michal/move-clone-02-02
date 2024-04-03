@@ -37,6 +37,7 @@ namespace MyProject.Controllers
         [HttpGet]
         public async Task<List<DriverDto>> GetAll()
         {
+           // var driver=service.getAll();
             return await service.getAll();
         }
 
@@ -73,20 +74,11 @@ namespace MyProject.Controllers
                     return Conflict("Email address already exists");
                 }
 
-                // בדיקה אם הקוד אימות נכון ולא קיים נהג קיים עם אותו האימייל
-                //if (IsVerificationCodeCorrect(driverDto.Email, driverDto.VerificationCode))
-                //{
-
-                //if (await IsVerificationCodeCorrect(driverDto.VerificationCode, code))
-                //{
+              
                     // הוספת הנתונים לבסיס הנתונים
                     await service.Add(driverDto);
                     return Ok(new { verificationCode = code });
-                //}
-                //else
-                //{
-                //return BadRequest("Invalid verification code");
-                //}
+            
 
             }
             catch (Exception ex)
@@ -148,39 +140,7 @@ namespace MyProject.Controllers
                 Console.WriteLine($"Failed to send email: {ex.Message}");
             }
         }
-        //בדיקה האם הקוד שהוקש נכון
-
-        //public async Task<Boolean> IsVerificationCodeCorrect(string email, string code)
-        //{
-        //    try
-
-        //    {
-        //        var drivers = await service.getAll(); // קבלת כל הנהגים מהבסיס נתונים
-        //        var driver = drivers.FirstOrDefault(d => d.Email == email);
-
-        //        if (driver != null)
-        //        {
-        //            if (driver.VerificationCode == code)
-        //            {
-        //                return true;
-        //            }
-        //            else
-        //            {
-        //                return false;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"An error occurred while verifying the code: {ex.Message}");
-        //        return false;
-        //    }
-        //}
-
+       
 
     }
 }

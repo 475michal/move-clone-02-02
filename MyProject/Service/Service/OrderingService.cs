@@ -54,8 +54,13 @@ namespace Service.Service
                 return mapper.Map<OrderingDto>(await repository.GetById(id));
             }
 
-            
-            
+
+            public async Task<List<OrderingDto>> GetByDriverId(int driverId)
+            {
+                var allOrderings = await repository.GetAll();
+                return mapper.Map<List<OrderingDto>>(allOrderings.Where(order => order.DriverId == driverId));
+            }
+
         }
     }
 
