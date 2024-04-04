@@ -163,3 +163,4 @@ C:\Users\Michal\Desktop\MyProject\MyProject\MyProject\bin\Debug\net6.0\MimeKit.d
 C:\Users\Michal\Desktop\MyProject\MyProject\MyProject\bin\Debug\net6.0\NETCore.MailKit.dll
 C:\Users\Michal\Desktop\MyProject\MyProject\MyProject\bin\Debug\net6.0\BouncyCastle.Crypto.dll
 C:\Users\Michal\Desktop\MyProject\MyProject\MyProject\bin\Debug\net6.0\html\EmailDesign.html
+C:\Users\Michal\Desktop\MyProject\MyProject\MyProject\bin\Debug\net6.0\html\EmailDesignOrderingUser.html

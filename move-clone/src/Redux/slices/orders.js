@@ -5,7 +5,7 @@ const initialState = {
     selectedDriverId: null,
     // selectedUserId:null,
     Ordering: [],
-    ratedOrders:[]
+    ratedOrders: []
 }
 
 export const fetchOrdering = createAsyncThunk(
@@ -17,6 +17,22 @@ export const fetchOrdering = createAsyncThunk(
         try {
             const response = await axios.get('https://localhost:7185/api/Ordering');
             console.log('Data from server Ordering:', response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching data from server:', error.message);
+            throw error;
+        }
+    }
+)
+
+export const fetchOrderingById = createAsyncThunk(
+    'Ordering/fetchOrderingById',
+    async (id, thunkAPI) => {
+        console.log('Fetching Ordering by ID:', id);
+
+        try {
+            const response = await axios.get(`https://localhost:7185/api/Ordering/${id}`);
+            console.log('Data from server Review:', response.data);
             return response.data;
         } catch (error) {
             console.error('Error fetching data from server:', error.message);
@@ -41,6 +57,7 @@ export const addOrderingToServer = createAsyncThunk(
                 "driveTime": driveTime
             });
             console.log('Ordering added successfully:', response.data);
+            console.log(response.data);
             return response.data;
         } catch (error) {
             console.error('Error adding Ordering to server:', error.message);
@@ -65,7 +82,7 @@ export const OrderingSlice = createSlice({
             state.ratedOrders.push(action.payload);
         },
     },
-    
+
     extraReducers: (builder) => {
         builder
             .addCase(fetchOrdering.pending, (state, action) => {
@@ -93,5 +110,5 @@ export const OrderingSlice = createSlice({
     },
 });
 export const { } = OrderingSlice.actions
-export const { setSelectedDriverId,addRatedOrder } = OrderingSlice.actions;
+export const { setSelectedDriverId, addRatedOrder } = OrderingSlice.actions;
 export default OrderingSlice.reducer

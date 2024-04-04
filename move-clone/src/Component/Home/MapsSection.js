@@ -159,28 +159,79 @@ function MapsSection() {
           const route = response.routes[0];
           const travelTime = route.legs[0].duration.text;
           setTravelTime(travelTime);
-  
+
           const infoWindowContent = `
             <div>
               <p>Estimated travel time: ${travelTime}</p>
             </div>
           `;
-          
+
           const infoWindow = new google.maps.InfoWindow({
             content: infoWindowContent
           });
-          
+
           const midpointIndex = Math.floor(route.overview_path.length / 2);
           const midpoint = route.overview_path[midpointIndex];
           infoWindow.setPosition(midpoint);
           infoWindow.open(map);
-  
+
         } else {
           console.error('Directions request failed due to ' + status);
         }
       });
     }
   }, [source, destination, map]);
+
+  const [closestDriverIndex, setClosestDriverIndex] = useState(null);
+  const [driverIconSize, setDriverIconSize] = useState("large");
+
+  useEffect(() => {
+    if (driverCoordinates && driverCoordinates.length > 0 && source && destination) {
+      let minDistance = Infinity;
+      let closestIndex = null;
+
+      const calculateClosestDriver = async () => {
+        if (!source || !source.lat || !source.lng) {
+          return;
+        }
+        for (let index = 0; index < driverCoordinates.length; index++) {
+          const driver = driverCoordinates[index];
+          const distance = await calculateDistance(source.lat, source.lng, driver.lat, driver.lng);
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestIndex = index;
+          }
+        }
+        setClosestDriverIndex(closestIndex);
+      };
+
+      calculateClosestDriver();
+    }
+  }, [driverCoordinates, source, destination]);
+
+  useEffect(() => {
+    if (source && destination) {
+      const intervalId = setInterval(() => {
+        setDriverIconSize((prevSize) => (prevSize === "large" ? "small" : "large"));
+      }, 500);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [source, destination]);
+
+  const calculateDistance = async (lat1, lng1, lat2, lng2) => {
+    const googleMaps = window.google.maps;
+    const origin = new googleMaps.LatLng(lat1, lng1);
+    const destination = new googleMaps.LatLng(lat2, lng2);
+
+    if (googleMaps.geometry && googleMaps.geometry.spherical) {
+      return googleMaps.geometry.spherical.computeDistanceBetween(origin, destination);
+    } else {
+      console.error('Google Maps geometry library not loaded');
+      return null;
+    }
+  };
+
 
 
   return (
@@ -196,23 +247,25 @@ function MapsSection() {
         controlSize={20}
 
       >
-        {driverCoordinates && driverCoordinates.map((coordinate, index) => (
+
+        {driverCoordinates && source && destination && driverCoordinates.map((coordinate, index) => (
           <MarkerF
             key={index}
             position={{ lat: coordinate.lat, lng: coordinate.lng }}
             icon={{
               url: icondriver,
               scaledSize: {
-                width: 70,
-                height: 60
-              }
+                width: closestDriverIndex === index ? (driverIconSize === "large" ? 70 : 50) : 70,
+                height: closestDriverIndex === index ? (driverIconSize === "large" ? 60 : 40) : 60,
+              },
             }}
             onClick={() => {
+              if (selectedDriver === coordinate.id) {
+                return; // תעצור כאן אם האייקון כבר נבחר
+              }
               setSelectedMarker(coordinate);
-              console.log("id of driver" + coordinate.id);
               setSelectedDriver(coordinate.id);
-              dispatch(setSelectedDriverId(coordinate.id)); // שליחת הנתון לרידקס
-              // קביעת הנהג הנבחר
+              dispatch(setSelectedDriverId(coordinate.id));
               showReview(coordinate.id);
             }}
           />

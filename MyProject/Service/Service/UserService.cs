@@ -13,6 +13,7 @@ namespace Service.Service
 {
     public class UserService : IService<UserDto>
     {
+
         private readonly IRepository<Users> repository;
 
         private IMapper mapper;

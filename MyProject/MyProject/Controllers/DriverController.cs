@@ -71,7 +71,7 @@ namespace MyProject.Controllers
                 }
                 if (drivers.Any(u => u.Email == driverDto.Email))
                 {
-                    return Conflict("Email address already exists");
+                    return Conflict(new { Message="Email address already exists"});
                 }
 
               

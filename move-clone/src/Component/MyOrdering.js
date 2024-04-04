@@ -30,6 +30,7 @@ function MyOrdering() {
         const fetchedUser = response.data.find(x => x.email === userEmail.emailAddress);
         const userId = fetchedUser ? fetchedUser.id : null;
         setSelectedUserId(userId);
+
         if (userId) {
           await dispatch(fetchUserById(userId));
           const driverResponse = await dispatch(fetchDriver());
@@ -47,10 +48,8 @@ function MyOrdering() {
   useEffect(() => {
     const fetchRatedOrders = async () => {
       try {
-        
         const response = await axios.get('https://localhost:7185/api/Review');
         const ratedOrders = response.data.map(Review => Review.orderId);
-        console.log(ratedOrders);
         setRatedOrders(ratedOrders);
       } catch (error) {
         console.error('Error fetching rated orders:', error);
@@ -63,7 +62,6 @@ function MyOrdering() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        
         const response = await axios.get('https://localhost:7185/api/Ordering');
         setOrders(response.data);
       } catch (error) {
@@ -84,7 +82,6 @@ function MyOrdering() {
   };
 
   const handleSubmitRating = () => {
-    console.log('Submitted rating:', selectedStars, 'Notes:', notes, Driverid);
     handleCloseRatingWindow();
 
     dispatch(addReviewToServer({
@@ -101,7 +98,7 @@ function MyOrdering() {
     <div>
       <h4 style={{ textAlign: 'left' }}>My Rated Orders</h4>
       <div className="row">
-        {userData && userData.orderList && orders.map(order => (
+        {userData && userData.orderList && userData.orderList.length > 0 && userData.orderList.map(order => (
           <div key={order.id} className="col-md-4 mb-3" >
             <div className="card">
               <div className="card-body">

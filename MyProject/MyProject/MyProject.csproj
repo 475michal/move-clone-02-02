@@ -32,6 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="html\EmailDesignOrderingUser.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="html\EmailDesign.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

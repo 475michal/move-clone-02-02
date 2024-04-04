@@ -9,8 +9,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Service.Service
-{
     namespace Service.Service
     {
         public class OrderingService : IService<OrderingDto>
@@ -64,4 +62,3 @@ namespace Service.Service
         }
     }
 
-}

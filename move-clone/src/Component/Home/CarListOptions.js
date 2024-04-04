@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { CarListData } from "./CarListDate";
 import CarListItem from "./CarListItem";
-import { addOrderingToServer } from "../../Redux/slices/orders";
+import { addOrderingToServer, fetchOrdering, fetchOrderingById } from "../../Redux/slices/orders";
 import { useDispatch, useSelector } from "react-redux";
 import { useClerk } from "@clerk/clerk-react";
 import { fetchUser, fetchUserEmail } from "../../Redux/slices/users";
@@ -21,7 +21,7 @@ function CarListOptions({ id, distance, source, destination }) {
   const handleCloseModal = () => {
     setShowModal(false);
     navigate('/Home');
-    };
+  };
   const [showModal, setShowModal] = useState(false);
 
   //Add ordering
@@ -31,18 +31,40 @@ function CarListOptions({ id, distance, source, destination }) {
     if (source && destination && selectedCar && selectedDriverId) {
 
       debugger
-      await dispatch(addOrderingToServer({
-        iduser: id,
-        iddriver: selectedDriverId,
-        status: true,
-        choiseCar: selectedCar.name,
-        source: source.label,
-        destination: destination.label,
-        driveTime: new Date().toISOString(),
-      }));
-      handleShowModal();
+      try {
+        const res = await dispatch(addOrderingToServer({
+          iduser: id,
+          iddriver: selectedDriverId,
+          status: true,
+          choiseCar: selectedCar.name,
+          source: source.label,
+          destination: destination.label,
+          driveTime: new Date().toISOString(),
+        }));
+        debugger
+        const response = await dispatch(fetchOrdering());
+        if (response && response.payload) {
+          const allOrders = response.payload;
+          debugger
+          if (allOrders.length > 0) {
+            const lastOrder = allOrders[allOrders.length - 1];
+            const lastOrderId = lastOrder.id;
+            console.log('Last added order ID:', lastOrderId);
+            debugger
+            handleShowModal();
+            await dispatch(fetchOrderingById(lastOrderId))
 
-
+          }
+          else {
+            console.log('No orders found.');
+          }
+        } else {
+          console.log('Error fetching orders.');
+        }
+      }
+      catch (error) {
+        console.error('Error adding order:', error);
+      }
     } else {
       console.log('User not found');
     }
