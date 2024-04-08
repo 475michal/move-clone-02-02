@@ -105,7 +105,7 @@ namespace MyProject.Controllers
                     var message = new MimeMessage();
                     message.From.Add(new MailboxAddress("move", "moveclone.app@gmail.com"));
                     message.To.Add(MailboxAddress.Parse(email));
-                    message.Subject = "Enter the password to move-app";
+                    message.Subject = "Order Confirmation in move-app";
 
                     var builder = new BodyBuilder();
                     // Load HTML content from file
